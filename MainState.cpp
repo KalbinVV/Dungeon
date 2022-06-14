@@ -1,4 +1,5 @@
 #include "MainState.h"
+#include "Tile.h"
 
 MainState::MainState(Game* game){
     this->game = game;
@@ -19,6 +20,7 @@ void MainState::render(){
         g: 0,
         b: 0
     });
-    spriteAtlas->drawAt(renderer, 14, 1, NULL);
+    Tile tile(spriteAtlas, 2, 6, "1", "1");
+    tile.draw(renderer);
     renderer->update();
 }

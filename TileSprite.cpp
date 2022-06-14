@@ -1,5 +1,9 @@
 #include "TileSprite.h"
 
+TileSprite::TileSprite(){
+    this->texture = nullptr;
+}
+
 TileSprite::TileSprite(SDL_Texture* texture, int x, int y, int tileWidth, int tileHeight){
     this->texture = texture;
     this->x = x;

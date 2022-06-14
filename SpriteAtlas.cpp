@@ -42,6 +42,10 @@ void SpriteAtlas::drawAt(Renderer* renderer, int x, int y, SDL_Rect* dstRect){
     SDL_RenderCopy(renderer->getSdlRenderer(), texture, &srcRect, dstRect);
 }
 
+TileSprite SpriteAtlas::getTileSprite(int x, int y){
+    return TileSprite(texture, x, y, tileWidth, tileHeight);
+}
+
 SpriteAtlas::~SpriteAtlas(){
     if(texture) SDL_DestroyTexture(texture);
 }

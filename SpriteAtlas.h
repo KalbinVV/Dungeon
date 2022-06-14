@@ -5,6 +5,7 @@
 #include <string>
 #include "ISprite.h"
 #include "Renderer.h"
+#include "TileSprite.h"
 
 class SpriteAtlas : public ISprite{
 private:
@@ -18,6 +19,7 @@ public:
     int getTileHeight();
     void draw(Renderer* renderer, SDL_Rect* dstRect = NULL, SDL_Rect* srcRect = NULL);
     void drawAt(Renderer* renderer, int x, int y, SDL_Rect* dstRect);
+    TileSprite getTileSprite(int x, int y);
     ~SpriteAtlas();
 };
 
