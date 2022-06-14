@@ -3,12 +3,15 @@
 
 #include "Window.h"
 #include "Renderer.h"
+#include "SpriteAtlas.h"
 #include "IState.h"
+#include <string>
 
 class Game{
 private:
     Window window;
     Renderer renderer;
+    SpriteAtlas spriteAtlas;
     IState* state;
 public:
     static void initModules();
@@ -17,6 +20,8 @@ public:
     Window* getWindow();
     Renderer* getRenderer();
     void setState(IState* newState);
+    void openSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
+    SpriteAtlas* getSpriteAtlas();
     void run();
 };
 

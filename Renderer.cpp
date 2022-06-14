@@ -17,6 +17,10 @@ void Renderer::unInit(){
     sdlRenderer = nullptr;
 }
 
+SDL_Renderer* Renderer::getSdlRenderer(){
+    return sdlRenderer;
+}
+
 void Renderer::clear(SDL_Color color){
     SDL_SetRenderDrawColor(sdlRenderer, color.r, color.g, color.b, color.a);
     SDL_RenderClear(sdlRenderer);

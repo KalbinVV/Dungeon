@@ -13,10 +13,12 @@ void MainState::handleEvents(){
 
 void MainState::render(){
     Renderer* renderer = game->getRenderer();
+    SpriteAtlas* spriteAtlas = game->getSpriteAtlas();
     renderer->clear(SDL_Color{
         r: 0,
-        g: 255,
+        g: 0,
         b: 0
     });
+    spriteAtlas->drawAt(renderer, 14, 1, NULL);
     renderer->update();
 }

@@ -29,6 +29,14 @@ void Game::setState(IState* newState){
     state = newState;
 }
 
+void Game::openSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
+    spriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+}
+
+SpriteAtlas* Game::getSpriteAtlas(){
+    return &spriteAtlas;
+}
+
 void Game::run(){
     setState(new MainState(this));
     while(window.isOpen()){

@@ -6,6 +6,7 @@ int main(){
     try{
         Game::initModules();
         Game game("Dungeon", 800, 600);
+        game.openSpriteAtlas("assets/tiles.png", 10, 10);
         game.run();
         Game::unInitModules();
     }catch(const InitException& ex){
