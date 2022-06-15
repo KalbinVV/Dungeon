@@ -42,8 +42,8 @@ void SpriteAtlas::drawAt(Renderer* renderer, int x, int y, SDL_Rect* dstRect){
     SDL_RenderCopy(renderer->getSdlRenderer(), texture, &srcRect, dstRect);
 }
 
-TileSprite SpriteAtlas::getTileSprite(int x, int y){
-    return TileSprite(texture, x, y, tileWidth, tileHeight);
+AssetSprite SpriteAtlas::getAssetSprite(int x, int y){
+    return AssetSprite(texture, x, y, tileWidth, tileHeight);
 }
 
 SpriteAtlas::~SpriteAtlas(){

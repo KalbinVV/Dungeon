@@ -7,16 +7,19 @@
 
 class Tile : public ISprite{
 private:
-    TileSprite tileSprite;
+    AssetSprite assetSprite;
     std::string description;
     std::string name;
 public:
-    Tile(SpriteAtlas* spriteAtlas, int spriteX, int spriteY, std::string description, std::string name);
+    Tile(std::string name, std::string description, SpriteAtlas* spriteAtlas, int spriteX, int spriteY);
+    Tile(Tile* tile);
     virtual std::string getDescription();
     virtual std::string getName();
+    virtual AssetSprite getAssetSprite();
     virtual void draw(Renderer* renderer, SDL_Rect* dstRect = NULL, SDL_Rect* srcRect = NULL);
     virtual void onMove() {};
     virtual void onInteract() {};
+    virtual ~Tile() {};
 };
 
 #endif // TILE_H_INCLUDED

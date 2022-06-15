@@ -14,13 +14,23 @@ void MainState::handleEvents(){
 
 void MainState::render(){
     Renderer* renderer = game->getRenderer();
-    SpriteAtlas* spriteAtlas = game->getSpriteAtlas();
     renderer->clear(SDL_Color{
-        r: 0,
-        g: 0,
-        b: 0
+        r: 255,
+        g: 255,
+        b: 255
     });
-    Tile tile(spriteAtlas, 2, 6, "1", "1");
-    tile.draw(renderer);
+    int spriteWidth = game->getWindow()->getWidth() / 20;
+    int spriteHeight = game->getWindow()->getHeight() / 20;
+    for(int i = 0; i < 20; i++){
+        for(int j = 0; j < 20; j++){
+            SDL_Rect dstRect{
+                x: j * spriteWidth,
+                y: i * spriteHeight,
+                w: spriteWidth,
+                h: spriteHeight
+            };
+            game->getTileAt(i, j)->draw(renderer, &dstRect);
+        }
+    }
     renderer->update();
 }

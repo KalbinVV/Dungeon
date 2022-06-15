@@ -12,10 +12,20 @@ void Window::open(const char* title, int width, int height){
         throw InitException(SDL_GetError());
     }
     windowIsOpen = true;
+    this->width = width;
+    this->height = height;
 }
 
 SDL_Window* Window::getSdlWindow(){
     return sdlWindow;
+}
+
+int Window::getWidth(){
+    return width;
+}
+
+int Window::getHeight(){
+    return height;
 }
 
 bool Window::isOpen(){

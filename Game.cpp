@@ -12,6 +12,7 @@ void Game::unInitModules(){
 
 Game::Game(const char* title, int width, int height){
     state = nullptr;
+    worldMap = nullptr;
     window.open(title, width, height);
     renderer.init(&window);
 }
@@ -29,11 +30,19 @@ void Game::setState(IState* newState){
     state = newState;
 }
 
-void Game::openSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
+void Game::openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
     spriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
 }
 
-SpriteAtlas* Game::getSpriteAtlas(){
+void Game::genWorld(int width, int height){
+    worldMap = std::make_unique<WorldMap>(getTilesSpriteAtlas(), width, height);
+}
+
+Tile* Game::getTileAt(int y, int x){
+    return worldMap->get(y,x);
+}
+
+SpriteAtlas* Game::getTilesSpriteAtlas(){
     return &spriteAtlas;
 }
 

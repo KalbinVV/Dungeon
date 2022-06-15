@@ -1,10 +1,10 @@
-#include "TileSprite.h"
+#include "AssetSprite.h"
 
-TileSprite::TileSprite(){
+AssetSprite::AssetSprite(){
     this->texture = nullptr;
 }
 
-TileSprite::TileSprite(SDL_Texture* texture, int x, int y, int tileWidth, int tileHeight){
+AssetSprite::AssetSprite(SDL_Texture* texture, int x, int y, int tileWidth, int tileHeight){
     this->texture = texture;
     this->x = x;
     this->y = y;
@@ -12,7 +12,7 @@ TileSprite::TileSprite(SDL_Texture* texture, int x, int y, int tileWidth, int ti
     this->tileHeight = tileHeight;
 }
 
-void TileSprite::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
+void AssetSprite::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
     SDL_Rect spriteSrcRect{
         x: x * tileWidth,
         y: y * tileHeight,

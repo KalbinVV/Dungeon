@@ -7,10 +7,14 @@ class Window{
 private:
     SDL_Window* sdlWindow;
     bool windowIsOpen;
+    int width;
+    int height;
 public:
     Window();
     void open(const char* title, int width, int height);
     SDL_Window* getSdlWindow();
+    int getWidth();
+    int getHeight();
     bool isOpen();
     void close();
     ~Window();
