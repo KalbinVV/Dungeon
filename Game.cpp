@@ -6,6 +6,7 @@ Game* Game::uniquePtr = nullptr;
 
 void Game::initModules(){
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) throw InitException(SDL_GetError());
+    if(TTF_Init() == -1) throw InitException(TTF_GetError());
 }
 
 void Game::unInitModules(){
@@ -41,6 +42,14 @@ Window* Game::getWindow(){
 
 Renderer* Game::getRenderer(){
     return &renderer;
+}
+
+void Game::openFont(std::string fontSrc, int characterSize){
+    font.open(fontSrc, characterSize);
+}
+
+Font* Game::getFont(){
+    return &font;
 }
 
 void Game::setState(IState* newState){

@@ -3,6 +3,7 @@
 #include "RenderException.h"
 #include "WorldException.h"
 #include "Game.h"
+#include "ErrorState.h"
 
 int main(){
     try{
@@ -18,9 +19,19 @@ int main(){
     }catch(const InitException& ex){
         std::cerr << "Error when init: " << ex.what() << std::endl;
     }catch(const RenderException& ex){
-        std::cerr << "Error when render: " << ex.what() << std::endl;
+        std::string errorStr = "Error when render: ";
+        errorStr += ex.what();
+        Game::init()->getWindow()->close();
+        Game::unInit();
+        Game::unInitModules();
+        new ErrorState(errorStr);
     }catch(const WorldException& ex){
-        std::cerr << "World exception: " << ex.what() << std::endl;
+        std::string errorStr = "World exception: ";
+        errorStr += ex.what();
+        Game::init()->getWindow()->close();
+        Game::unInit();
+        Game::unInitModules();
+        new ErrorState(errorStr);
     }
     return 0;
 }

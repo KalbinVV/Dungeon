@@ -1,6 +1,7 @@
 #include "MainState.h"
 #include "Tile.h"
 #include <iostream>
+#include "RenderException.h"
 
 MainState::MainState(Game* game){
     this->game = game;

@@ -7,6 +7,7 @@
 #include "IState.h"
 #include "WorldMap.h"
 #include "Player.h"
+#include "Font.h"
 #include <string>
 #include <memory>
 
@@ -14,6 +15,7 @@ class Game{
 private:
     Window window;
     Renderer renderer;
+    Font font;
     SpriteAtlas tilesSpriteAtlas;
     SpriteAtlas peopleSpriteAtlas;
     std::unique_ptr<WorldMap> worldMap;
@@ -29,6 +31,8 @@ public:
     static void unInit();
     Window* getWindow();
     Renderer* getRenderer();
+    void openFont(std::string fontSrc, int characterSize);
+    Font* getFont();
     void setState(IState* newState);
     void openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
     SpriteAtlas* getTilesSpriteAtlas();
