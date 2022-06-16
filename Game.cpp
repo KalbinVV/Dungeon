@@ -2,6 +2,8 @@
 #include "InitException.h"
 #include "MainState.h"
 
+Game* Game::uniquePtr = nullptr;
+
 void Game::initModules(){
     if(SDL_Init(SDL_INIT_EVERYTHING) != 0) throw InitException(SDL_GetError());
 }
@@ -10,10 +12,26 @@ void Game::unInitModules(){
     SDL_Quit();
 }
 
-Game::Game(const char* title, int width, int height){
+Game* Game::init(){
+    if(!uniquePtr){
+        uniquePtr = new Game();
+    }
+    return uniquePtr;
+}
+
+void Game::unInit(){
+    if(uniquePtr) delete uniquePtr;
+}
+
+Game::Game(){
+    std::string windowTitle = "Dungeon";
+    int windowWidth = 800;
+    int windowHeight = 600;
     state = nullptr;
     worldMap = nullptr;
-    window.open(title, width, height);
+    player = nullptr;
+    viewRange = 11;
+    window.open(windowTitle.c_str(), windowWidth, windowHeight);
     renderer.init(&window);
 }
 
@@ -26,24 +44,55 @@ Renderer* Game::getRenderer(){
 }
 
 void Game::setState(IState* newState){
-    if(state) delete state;
-    state = newState;
+    state.reset(newState);
 }
 
 void Game::openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
-    spriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+    tilesSpriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+}
+
+SpriteAtlas* Game::getTilesSpriteAtlas(){
+    return &tilesSpriteAtlas;
+}
+
+void Game::openPeopleSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
+    peopleSpriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+}
+
+SpriteAtlas* Game::getPeopleSpriteAtlas(){
+    return &peopleSpriteAtlas;
 }
 
 void Game::genWorld(int width, int height){
-    worldMap = std::make_unique<WorldMap>(getTilesSpriteAtlas(), width, height);
+    worldMap = std::make_unique<WorldMap>(width, height);
+}
+
+void Game::setViewRange(int viewRange){
+    this->viewRange = viewRange;
+}
+
+int Game::getViewRange(){
+    return viewRange;
+}
+
+void Game::initPlayer(int spriteX, int spriteY){
+    player = std::make_unique<Player>(getPeopleSpriteAtlas(), spriteX, spriteY);
+}
+
+Player* Game::getPlayer(){
+    return player.get();
 }
 
 Tile* Game::getTileAt(int y, int x){
     return worldMap->get(y,x);
 }
 
-SpriteAtlas* Game::getTilesSpriteAtlas(){
-    return &spriteAtlas;
+int Game::getWorldWidth(){
+    return worldMap->getWidth();
+}
+
+int Game::getWorldHeight(){
+    return worldMap->getHeight();
 }
 
 void Game::run(){

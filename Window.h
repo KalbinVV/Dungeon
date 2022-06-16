@@ -13,7 +13,9 @@ public:
     Window();
     void open(const char* title, int width, int height);
     SDL_Window* getSdlWindow();
+    void setWidth(int width);
     int getWidth();
+    void setHeight(int height);
     int getHeight();
     bool isOpen();
     void close();

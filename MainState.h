@@ -7,6 +7,7 @@
 class MainState : public IState{
 private:
     Game* game;
+    void updateScreen();
 public:
     MainState(Game* game);
     void handleEvents() override;

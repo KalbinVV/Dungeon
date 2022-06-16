@@ -7,10 +7,13 @@
 int main(){
     try{
         Game::initModules();
-        Game game("Dungeon", 800, 600);
-        game.openTilesSpriteAtlas("assets/tiles.png", 10, 10);
-        game.genWorld(20, 20);
-        game.run();
+        Game* game = Game::init();
+        game->openTilesSpriteAtlas("assets/Tiles.png", 10, 10);
+        game->openPeopleSpriteAtlas("assets/People.png", 10, 10);
+        game->initPlayer(1, 0);
+        game->genWorld(20, 20);
+        game->run();
+        Game::unInit();
         Game::unInitModules();
     }catch(const InitException& ex){
         std::cerr << "Error when init: " << ex.what() << std::endl;

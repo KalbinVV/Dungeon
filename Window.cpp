@@ -7,7 +7,7 @@ Window::Window(){
 
 void Window::open(const char* title, int width, int height){
     sdlWindow = SDL_CreateWindow(title, SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height,
-        SDL_WINDOW_SHOWN);
+        SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if(sdlWindow == NULL){
         throw InitException(SDL_GetError());
     }
@@ -20,8 +20,16 @@ SDL_Window* Window::getSdlWindow(){
     return sdlWindow;
 }
 
+void Window::setWidth(int width){
+    this->width = width;
+}
+
 int Window::getWidth(){
     return width;
+}
+
+void Window::setHeight(int height){
+    this->height = height;
 }
 
 int Window::getHeight(){

@@ -2,7 +2,10 @@
 #include "WorldException.h"
 
 std::map<std::string, int> TilesBuilder::tilesID = {
-    {"grass0",0}
+    {"empty", 0},
+    {"grass0",1},
+    {"wall0", 2},
+    {"skull0",3}
 };
 
 Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
@@ -13,7 +16,19 @@ Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
     }
     switch(tilesID[tileID]){
         case 0:{
-            tile = new Tile("Трава", "!", spriteAtlas, 2, 2);
+            tile = new Tile("Пустота", "!", spriteAtlas, 0, 0);
+            break;
+        }
+        case 1:{
+            tile = new Tile("Трава", "!", spriteAtlas, 1, 1);
+            break;
+        }
+        case 2:{
+            tile = new Tile("Стена", "!", spriteAtlas, 14, 31);
+            break;
+        }
+        case 3:{
+            tile = new Tile("Череп", "!", spriteAtlas, 2, 2);
             break;
         }
     }

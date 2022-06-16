@@ -2,7 +2,6 @@
 #define WORLDMAP_H_INCLUDED
 
 #include "Tile.h"
-#include "SpriteAtlas.h"
 
 typedef Tile* TilePtr;
 
@@ -12,8 +11,11 @@ private:
     int width;
     int height;
 public:
-    WorldMap(SpriteAtlas* spriteAtlas, int width, int height);
+    WorldMap(int width, int height);
     TilePtr get(int y, int x);
+    void set(int y, int x, Tile* tile);
+    int getWidth();
+    int getHeight();
     ~WorldMap();
 };
 

@@ -6,6 +6,7 @@
 #include "SpriteAtlas.h"
 #include "IState.h"
 #include "WorldMap.h"
+#include "Player.h"
 #include <string>
 #include <memory>
 
@@ -13,20 +14,34 @@ class Game{
 private:
     Window window;
     Renderer renderer;
-    SpriteAtlas spriteAtlas;
+    SpriteAtlas tilesSpriteAtlas;
+    SpriteAtlas peopleSpriteAtlas;
     std::unique_ptr<WorldMap> worldMap;
-    IState* state;
+    std::unique_ptr<Player> player;
+    std::unique_ptr<IState> state;
+    int viewRange;
+    static Game* uniquePtr;
+    Game();
 public:
     static void initModules();
     static void unInitModules();
-    Game(const char*, int width, int height);
+    static Game* init();
+    static void unInit();
     Window* getWindow();
     Renderer* getRenderer();
     void setState(IState* newState);
     void openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
-    void genWorld(int width, int height);
-    Tile* getTileAt(int y, int x);
     SpriteAtlas* getTilesSpriteAtlas();
+    void openPeopleSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
+    SpriteAtlas* getPeopleSpriteAtlas();
+    void genWorld(int width, int height);
+    void setViewRange(int viewRange);
+    int getViewRange();
+    void initPlayer(int spriteX, int spriteY);
+    Player* getPlayer();
+    Tile* getTileAt(int y, int x);
+    int getWorldWidth();
+    int getWorldHeight();
     void run();
 };
 
