@@ -57,22 +57,38 @@ void MainState::handleEvents(){
             }
         }
         if(event.type == SDL_KEYDOWN){
-            if(event.key.keysym.scancode == SDL_SCANCODE_D){
-                game->getPlayer()->setCoords(game->getPlayer()->getCoords().addX(1));
-                updateScreen();
-            }else if(event.key.keysym.scancode == SDL_SCANCODE_A){
-                game->getPlayer()->setCoords(game->getPlayer()->getCoords().addX(-1));
-                updateScreen();
-            }else if(event.key.keysym.scancode == SDL_SCANCODE_S){
-                game->getPlayer()->setCoords(game->getPlayer()->getCoords().addY(1));
-                updateScreen();
-            }else if(event.key.keysym.scancode == SDL_SCANCODE_W){
-                game->getPlayer()->setCoords(game->getPlayer()->getCoords().addY(-1));
-                updateScreen();
+            switch(event.key.keysym.scancode){
+                case SDL_SCANCODE_D:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_A:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(-1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_S:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_W:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(-1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_E:{
+                    Vec2i coords = game->getPlayer()->getCoords();
+                    std::cout << game->getTileAt(coords.y, coords.x)->getName() << std::endl;
+                    break;
+                }
+                default:
+                    break;
             }
         }
     }
 }
 
 //Нет активного рендера.
-void MainState::render(){}
+void MainState::render() {}

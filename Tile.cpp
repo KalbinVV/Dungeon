@@ -27,3 +27,7 @@ std::string Tile::getName(){
 void Tile::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
     assetSprite.draw(renderer, dstRect);
 }
+
+void Tile::onMove(Player* player, Vec2i coords){
+    player->setCoords(coords);
+}

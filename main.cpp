@@ -11,7 +11,7 @@ int main(){
         game->openTilesSpriteAtlas("assets/Tiles.png", 10, 10);
         game->openPeopleSpriteAtlas("assets/People.png", 10, 10);
         game->initPlayer(1, 0);
-        game->genWorld(20, 20);
+        game->genWorld(50, 50);
         game->run();
         Game::unInit();
         Game::unInitModules();

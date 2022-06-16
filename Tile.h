@@ -3,6 +3,7 @@
 
 #include "ISprite.h"
 #include "SpriteAtlas.h"
+#include "Player.h"
 #include <string>
 
 class Tile : public ISprite{
@@ -17,7 +18,7 @@ public:
     virtual std::string getName();
     virtual AssetSprite getAssetSprite();
     virtual void draw(Renderer* renderer, SDL_Rect* dstRect = NULL, SDL_Rect* srcRect = NULL);
-    virtual void onMove() {};
+    virtual void onMove(Player* player, Vec2i coords);
     virtual void onInteract() {};
     virtual ~Tile() {};
 };

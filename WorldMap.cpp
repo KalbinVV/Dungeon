@@ -2,8 +2,10 @@
 #include "TilesBuilder.h"
 #include <vector>
 #include "Game.h"
+#include "WorldException.h"
 
 WorldMap::WorldMap(int width, int height){
+    srand(time(0));
     Game* game = Game::init();
     SpriteAtlas* spriteAtlas = game->getTilesSpriteAtlas();
     this->width = width;
@@ -12,7 +14,7 @@ WorldMap::WorldMap(int width, int height){
     for(int i = 0; i < height; i++){
         tiles[i] = new TilePtr[width];
         for(int j = 0; j < width; j++){
-            tiles[i][j] = TilesBuilder::genTile(spriteAtlas, "empty");
+            tiles[i][j] = TilesBuilder::genTile(spriteAtlas, "grass0");
         }
     }
     std::vector<SDL_Rect> rects;
@@ -20,8 +22,8 @@ WorldMap::WorldMap(int width, int height){
         SDL_Rect newRect{
             x: rand() % width,
             y: rand() % height,
-            w: rand() % 20 + width / 5,
-            h: rand() % 20 + height / 5
+            w: rand() % 20 + 5,
+            h: rand() % 20 + 5
         };
         if(newRect.x + newRect.w >= width || newRect.y + newRect.h >= height){
             i--;
@@ -46,14 +48,14 @@ WorldMap::WorldMap(int width, int height){
                 if(i == rect.y || i == rect.y + rect.h || j == rect.x || j == rect.x + rect.w){
                     set(i, j, TilesBuilder::genTile(spriteAtlas, "wall0"));
                 }else{
-                    set(i, j, TilesBuilder::genTile(spriteAtlas, "grass0"));
+                    set(i, j, TilesBuilder::genTile(spriteAtlas, "floor0"));
                 }
             }
         }
     }
     for(SDL_Rect rect : rects){
         int y = rect.y + rect.h;
-        int x = (rect.x + rect.w) / 2;
+        int x = rect.x + 1;
         set(y, x, TilesBuilder::genTile(spriteAtlas, "empty"));
     }
     SDL_Rect randRect = rects[rand() % rects.size()];
@@ -68,6 +70,7 @@ TilePtr WorldMap::get(int y, int x){
 }
 
 void WorldMap::set(int y, int x, Tile* tile){
+    if(y < 0 || y >= height || x < 0 || x >= width) throw WorldException("Out of the world (Incorrect index)");
     if(tiles[y][x]) delete tiles[y][x];
     tiles[y][x] = tile;
 }

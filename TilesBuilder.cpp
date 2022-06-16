@@ -1,11 +1,12 @@
 #include "TilesBuilder.h"
 #include "WorldException.h"
+#include "Wall.h"
 
 std::map<std::string, int> TilesBuilder::tilesID = {
     {"empty", 0},
     {"grass0",1},
     {"wall0", 2},
-    {"skull0",3}
+    {"floor0",3}
 };
 
 Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
@@ -24,11 +25,11 @@ Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
             break;
         }
         case 2:{
-            tile = new Tile("Стена", "!", spriteAtlas, 14, 31);
+            tile = new Wall("Стена", "!", spriteAtlas, 14, 31);
             break;
         }
         case 3:{
-            tile = new Tile("Череп", "!", spriteAtlas, 2, 2);
+            tile = new Tile("Пол", "!", spriteAtlas, 14, 30);
             break;
         }
     }
