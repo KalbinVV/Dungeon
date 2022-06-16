@@ -18,6 +18,7 @@ private:
     Font font;
     SpriteAtlas tilesSpriteAtlas;
     SpriteAtlas peopleSpriteAtlas;
+    SpriteAtlas weaponsSpriteAtlas;
     std::unique_ptr<WorldMap> worldMap;
     std::unique_ptr<Player> player;
     std::unique_ptr<IState> state;
@@ -38,6 +39,8 @@ public:
     SpriteAtlas* getTilesSpriteAtlas();
     void openPeopleSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
     SpriteAtlas* getPeopleSpriteAtlas();
+    void openWeaponsSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
+    SpriteAtlas* getWeaponsSpriteAtlas();
     void genWorld(int width, int height);
     void setViewRange(int viewRange);
     int getViewRange();

@@ -32,7 +32,12 @@ void MainState::updateScreen(){
                 w: spriteWidth,
                 h: spriteHeight
             };
-            game->getTileAt(i, j)->draw(renderer, &dstRect);
+            Tile* tile = game->getTileAt(i, j);
+            tile->draw(renderer, &dstRect);
+            std::vector<Item*> items = tile->getItems();
+            if(items.size() > 0){
+                items[items.size() - 1]->draw(renderer, &dstRect);
+            }
         }
     }
     SDL_Rect dstRect{

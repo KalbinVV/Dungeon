@@ -3,6 +3,8 @@
 #include <vector>
 #include "Game.h"
 #include "WorldException.h"
+#include "TilesBuilder.h"
+#include "ItemsBuilder.h"
 
 WorldMap::WorldMap(int width, int height){
     srand(time(0));
@@ -62,6 +64,7 @@ WorldMap::WorldMap(int width, int height){
     Vec2i coords;
     coords.x = randRect.x + 1;
     coords.y = randRect.y + 1;
+    tiles[5][5]->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
     game->getPlayer()->setCoords(&coords);
 }
 

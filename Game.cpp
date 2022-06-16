@@ -72,6 +72,14 @@ SpriteAtlas* Game::getPeopleSpriteAtlas(){
     return &peopleSpriteAtlas;
 }
 
+void Game::openWeaponsSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
+    weaponsSpriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+}
+
+SpriteAtlas* Game::getWeaponsSpriteAtlas(){
+    return &weaponsSpriteAtlas;
+}
+
 void Game::genWorld(int width, int height){
     worldMap = std::make_unique<WorldMap>(width, height);
 }

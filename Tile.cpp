@@ -28,6 +28,25 @@ void Tile::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
     assetSprite.draw(renderer, dstRect);
 }
 
+std::vector<Item*> Tile::getItems(){
+    return items;
+}
+
+void Tile::addItem(Item* item){
+    items.push_back(item);
+}
+
+void Tile::removeItem(Item* item){
+    auto it = items.begin();
+    for(Item* i : items){
+        if(i == item){
+            break;
+        }
+        it++;
+    }
+    items.erase(it);
+}
+
 void Tile::onMove(Player* player, Vec2i coords){
     player->setCoords(coords);
 }

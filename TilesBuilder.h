@@ -9,7 +9,7 @@
 
 class TilesBuilder{
 private:
-    static std::map<std::string, int> tilesID;
+    static std::map<std::string, int> tilesIDs;
 public:
     static Tile* genTile(SpriteAtlas* spriteAtlas, std::string tileID);
 };

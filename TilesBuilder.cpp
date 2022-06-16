@@ -2,7 +2,7 @@
 #include "WorldException.h"
 #include "Wall.h"
 
-std::map<std::string, int> TilesBuilder::tilesID = {
+std::map<std::string, int> TilesBuilder::tilesIDs = {
     {"empty", 0},
     {"grass0",1},
     {"wall0", 2},
@@ -11,11 +11,11 @@ std::map<std::string, int> TilesBuilder::tilesID = {
 
 Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
     Tile* tile = nullptr;
-    if(tilesID.count(tileID) == 0){
-        std::string errorMessage = tileID + " don't exist!";
+    if(tilesIDs.count(tileID) == 0){
+        std::string errorMessage = "Tile " + tileID + " don't exist!";
         throw WorldException(errorMessage);
     }
-    switch(tilesID[tileID]){
+    switch(tilesIDs[tileID]){
         case 0:{
             tile = new Tile("Пустота", "!", spriteAtlas, 0, 0);
             break;
@@ -32,6 +32,10 @@ Tile* TilesBuilder::genTile(SpriteAtlas* spriteAtlas, std::string tileID){
             tile = new Tile("Пол", "!", spriteAtlas, 14, 30);
             break;
         }
+        default:
+            std::string errorMessage = "Tile '" + tileID + "' exist, but don't implemented!";
+            throw WorldException(errorMessage);
+            break;
     }
     return tile;
 }
