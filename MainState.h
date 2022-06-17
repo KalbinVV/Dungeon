@@ -3,6 +3,7 @@
 
 #include "IState.h"
 #include "Game.h"
+#include <iostream>
 
 class MainState : public IState{
 private:
@@ -12,6 +13,8 @@ public:
     MainState(Game* game);
     void handleEvents() override;
     void render() override;
+    void view() override;
+    virtual ~MainState(){};
 };
 
 #endif // MAINSTATE_H_INCLUDED

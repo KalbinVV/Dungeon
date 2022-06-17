@@ -64,11 +64,12 @@ WorldMap::WorldMap(int width, int height){
     Vec2i coords;
     coords.x = randRect.x + 1;
     coords.y = randRect.y + 1;
-    tiles[5][5]->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
+    get(coords.y, coords.x + 1)->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
     game->getPlayer()->setCoords(&coords);
 }
 
 TilePtr WorldMap::get(int y, int x){
+    if(y < 0 || y >= height || x < 0 || x >= width) throw WorldException("Out of the world (Incorrect index)");
     return tiles[y][x];
 }
 

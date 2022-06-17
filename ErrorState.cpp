@@ -10,12 +10,12 @@
 ErrorState::ErrorState(std::string errorStr){
     try{
         Font font;
-        font.open("assets/font.ttf", 24);
+        font.open("assets/font.ttf", 48);
         Window window;
         window.open("Error", 800, 200);
         Renderer renderer;
         renderer.init(&window);
-        Text text(errorStr, &font);
+        Text text(errorStr, &font, TextRenderType::Quality);
         renderer.clear(SDL_Color{
             r: 0,
             g: 0,
@@ -25,7 +25,7 @@ ErrorState::ErrorState(std::string errorStr){
             x: 0,
             y: 0,
             w: static_cast<int>(errorStr.size()) * 16,
-            h: 24
+            h: 48
         };
         text.draw(&renderer, &dstRect);
         renderer.update();

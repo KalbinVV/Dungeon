@@ -2,13 +2,88 @@
 #include "Tile.h"
 #include <iostream>
 #include "RenderException.h"
+#include "Text.h"
+#include "InventoryState.h"
 
 MainState::MainState(Game* game){
     this->game = game;
     updateScreen();
 }
 
+void MainState::handleEvents(){
+    SDL_Event event;
+    while(SDL_PollEvent(&event)){
+        if(event.type == SDL_QUIT) game->getWindow()->close();
+        if(event.type == SDL_WINDOWEVENT){
+            if(event.window.event == SDL_WINDOWEVENT_RESIZED){
+                Window* window = game->getWindow();
+                window->setWidth(event.window.data1);
+                window->setHeight(event.window.data2);
+                updateScreen();
+            }
+        }
+        if(event.type == SDL_KEYDOWN){
+            switch(event.key.keysym.scancode){
+                case SDL_SCANCODE_RIGHT:
+                case SDL_SCANCODE_D:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_LEFT:
+                case SDL_SCANCODE_A:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(-1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_DOWN:
+                case SDL_SCANCODE_S:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_UP:
+                case SDL_SCANCODE_W:{
+                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(-1));
+                    updateScreen();
+                    break;
+                }
+                case SDL_SCANCODE_E:{
+                    Vec2i coords = game->getPlayer()->getCoords();
+                    std::cout << game->getTileAt(coords.y, coords.x)->getName() << std::endl;
+                    break;
+                }
+                case SDL_SCANCODE_P:{
+                    Vec2i coords = game->getPlayer()->getCoords();
+                    std::vector<Item*> items = game->getTileAt(coords.y, coords.x)->getItems();
+                    if(items.size() != 0){
+                        Item* item = items[0];
+                        game->getPlayer()->addItem(item);
+                        game->getTileAt(coords.y, coords.x)->removeItem(item);
+                        updateScreen();
+                        break;
+                    }
+                }
+                case SDL_SCANCODE_I:{
+                    game->setStateWithoutMemoryFree(new InventoryState(game, game->getPlayer(), this));
+                    break;
+                }
+                default:
+                    break;
+            }
+        }
+    }
+}
+
+//Нет активного рендера.
+void MainState::render() {}
+
 void MainState::updateScreen(){
+    view();
+    game->getRenderer()->update();
+}
+
+void MainState::view() {
     Renderer* renderer = game->getRenderer();
     Player* player = game->getPlayer();
     Vec2i coords = player->getCoords();
@@ -46,55 +121,25 @@ void MainState::updateScreen(){
         w: spriteWidth,
         h: spriteHeight
     };
-    game->getPlayer()->draw(renderer, &dstRect);
-    renderer->update();
-}
-
-void MainState::handleEvents(){
-    SDL_Event event;
-    while(SDL_PollEvent(&event)){
-        if(event.type == SDL_QUIT) game->getWindow()->close();
-        if(event.type == SDL_WINDOWEVENT){
-            if(event.window.event == SDL_WINDOWEVENT_RESIZED){
-                Window* window = game->getWindow();
-                window->setWidth(event.window.data1);
-                window->setHeight(event.window.data2);
-                updateScreen();
-            }
+    std::vector<Item*> items = game->getTileAt(coords.y, coords.x)->getItems();
+    if(items.size() != 0){
+        std::string infoText = "Подобрать предмет - P";
+        SDL_Rect textDstRect{
+            x: 0,
+            y: 0,
+            w: spriteWidth / 8 * static_cast<int>(infoText.size()) / 40 * 24,
+            h: spriteHeight / 3
+        };
+        std::string itemsText = "Предметы на клетке: ";
+        for(Item* item : items){
+            itemsText += item->getName() + " ";
         }
-        if(event.type == SDL_KEYDOWN){
-            switch(event.key.keysym.scancode){
-                case SDL_SCANCODE_D:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(1));
-                    updateScreen();
-                    break;
-                }
-                case SDL_SCANCODE_A:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(-1));
-                    updateScreen();
-                    break;
-                }
-                case SDL_SCANCODE_S:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(1));
-                    updateScreen();
-                    break;
-                }
-                case SDL_SCANCODE_W:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(-1));
-                    updateScreen();
-                    break;
-                }
-                case SDL_SCANCODE_E:{
-                    Vec2i coords = game->getPlayer()->getCoords();
-                    std::cout << game->getTileAt(coords.y, coords.x)->getName() << std::endl;
-                    break;
-                }
-                default:
-                    break;
-            }
-        }
+        Text text(infoText, game->getFont(), TextRenderType::Quality);
+        text.draw(renderer, &textDstRect);
+        text.setString(itemsText);
+        textDstRect.y += textDstRect.h + 5;
+        textDstRect.w = spriteWidth / 8 * static_cast<int>(itemsText.size()) / 40 * 24;
+        text.draw(renderer, &textDstRect);
     }
+    game->getPlayer()->draw(renderer, &dstRect);
 }
-
-//Нет активного рендера.
-void MainState::render() {}

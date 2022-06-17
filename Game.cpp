@@ -53,7 +53,12 @@ Font* Game::getFont(){
 }
 
 void Game::setState(IState* newState){
-    state.reset(newState);
+    if(state) delete state;
+    state = newState;
+}
+
+void Game::setStateWithoutMemoryFree(IState* newState){
+    state = newState;
 }
 
 void Game::openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){

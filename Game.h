@@ -21,7 +21,7 @@ private:
     SpriteAtlas weaponsSpriteAtlas;
     std::unique_ptr<WorldMap> worldMap;
     std::unique_ptr<Player> player;
-    std::unique_ptr<IState> state;
+    IState* state;
     int viewRange;
     static Game* uniquePtr;
     Game();
@@ -35,6 +35,7 @@ public:
     void openFont(std::string fontSrc, int characterSize);
     Font* getFont();
     void setState(IState* newState);
+    void setStateWithoutMemoryFree(IState* newState);
     void openTilesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
     SpriteAtlas* getTilesSpriteAtlas();
     void openPeopleSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
