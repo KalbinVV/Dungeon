@@ -5,6 +5,14 @@
 #include "Game.h"
 #include "ErrorState.h"
 
+void initErrorState(std::string errorStr){
+    Game::init()->getWindow()->close();
+    Game::unInit();
+    Game::unInitModules();
+    ErrorState* errorState = new ErrorState(errorStr);
+    delete errorState;
+}
+
 int main(){
     try{
         Game::initModules();
@@ -15,7 +23,7 @@ int main(){
         game->openFont("assets/font.ttf", 48);
         game->initPlayer(1, 0);
         game->genWorld(50, 50);
-        game->setViewRange(13);
+        game->setViewRange(11);
         game->run();
         Game::unInit();
         Game::unInitModules();
@@ -24,19 +32,15 @@ int main(){
     }catch(const RenderException& ex){
         std::string errorStr = "Error when render: ";
         errorStr += ex.what();
-        Game::init()->getWindow()->close();
-        Game::unInit();
-        Game::unInitModules();
-        ErrorState* errorState = new ErrorState(errorStr);
-        delete errorState;
+        initErrorState(errorStr);
     }catch(const WorldException& ex){
         std::string errorStr = "World exception: ";
         errorStr += ex.what();
-        Game::init()->getWindow()->close();
-        Game::unInit();
-        Game::unInitModules();
-        ErrorState* errorState = new ErrorState(errorStr);
-        delete errorState;
+        initErrorState(errorStr);
+    }catch(std::exception& ex){
+        std::string errorStr = "Exception: ";
+        errorStr += ex.what();
+        initErrorState(errorStr);
     }
     return 0;
 }

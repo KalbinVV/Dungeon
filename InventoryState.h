@@ -11,14 +11,14 @@ private:
     Game* game;
     Player* player;
     IState* backgroundState;
+    int currentItemIndex;
+    void updateMenu();
 public:
     InventoryState(Game* game, Player* player, IState* backgroundState);
     void handleEvents() override;
     void render() override;
     void view() override;
-    virtual ~InventoryState(){
-        std::cout << "Inventory state cleared!" << std::endl;
-    }
+    virtual ~InventoryState(){};
 };
 
 #endif // INVENTORYSTATE_H_INCLUDED

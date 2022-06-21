@@ -10,6 +10,7 @@ void Renderer::init(Window* window){
     if(sdlRenderer == NULL){
         throw InitException(SDL_GetError());
     }
+    SDL_SetRenderDrawBlendMode(sdlRenderer, SDL_BLENDMODE_BLEND);
 }
 
 void Renderer::unInit(){

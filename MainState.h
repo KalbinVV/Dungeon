@@ -9,6 +9,9 @@ class MainState : public IState{
 private:
     Game* game;
     void updateScreen();
+    void drawMap();
+    void drawPickupInfoIfItemExists();
+    void drawPlayer();
 public:
     MainState(Game* game);
     void handleEvents() override;

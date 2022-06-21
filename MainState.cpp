@@ -4,6 +4,7 @@
 #include "RenderException.h"
 #include "Text.h"
 #include "InventoryState.h"
+#include "PauseState.h"
 
 MainState::MainState(Game* game){
     this->game = game;
@@ -14,7 +15,7 @@ void MainState::handleEvents(){
     SDL_Event event;
     while(SDL_PollEvent(&event)){
         if(event.type == SDL_QUIT) game->getWindow()->close();
-        if(event.type == SDL_WINDOWEVENT){
+        else if(event.type == SDL_WINDOWEVENT){
             if(event.window.event == SDL_WINDOWEVENT_RESIZED){
                 Window* window = game->getWindow();
                 window->setWidth(event.window.data1);
@@ -22,7 +23,7 @@ void MainState::handleEvents(){
                 updateScreen();
             }
         }
-        if(event.type == SDL_KEYDOWN){
+        else if(event.type == SDL_KEYDOWN){
             switch(event.key.keysym.scancode){
                 case SDL_SCANCODE_RIGHT:
                 case SDL_SCANCODE_D:{
@@ -61,13 +62,16 @@ void MainState::handleEvents(){
                         game->getPlayer()->addItem(item);
                         game->getTileAt(coords.y, coords.x)->removeItem(item);
                         updateScreen();
-                        break;
                     }
+                    break;
                 }
                 case SDL_SCANCODE_I:{
                     game->setStateWithoutMemoryFree(new InventoryState(game, game->getPlayer(), this));
                     break;
                 }
+                case SDL_SCANCODE_ESCAPE:
+                    game->setStateWithoutMemoryFree(new PauseState(game, this));
+                    break;
                 default:
                     break;
             }
@@ -83,7 +87,7 @@ void MainState::updateScreen(){
     game->getRenderer()->update();
 }
 
-void MainState::view() {
+void MainState::drawMap(){
     Renderer* renderer = game->getRenderer();
     Player* player = game->getPlayer();
     Vec2i coords = player->getCoords();
@@ -100,7 +104,7 @@ void MainState::view() {
     for(int i = coords.y - viewRange / 2; i <= coords.y + viewRange / 2; i++){
         for(int j = coords.x - viewRange / 2; j <= coords.x + viewRange / 2; j++){
             if(i < 0 || j < 0 || i >= worldHeight || j >= worldWidth) continue;
-            if(i == coords.y && j == coords.x) continue;
+            //if(i == coords.y && j == coords.x) continue;
             SDL_Rect dstRect{
                 x: (j - coords.x + (viewRange / 2) ) * spriteWidth,
                 y: (i - coords.y + (viewRange / 2) ) * spriteHeight,
@@ -115,20 +119,27 @@ void MainState::view() {
             }
         }
     }
-    SDL_Rect dstRect{
-        x: viewRange / 2 * spriteWidth,
-        y: viewRange / 2 * spriteHeight,
-        w: spriteWidth,
-        h: spriteHeight
-    };
+}
+
+void MainState::drawPickupInfoIfItemExists(){
+    Renderer* renderer = game->getRenderer();
+    Vec2i coords = game->getPlayer()->getCoords();
     std::vector<Item*> items = game->getTileAt(coords.y, coords.x)->getItems();
     if(items.size() != 0){
+        SDL_Rect rectDstRect{
+            x: 0,
+            y: 0,
+            w: game->getWindow()->getWidth(),
+            h: 40
+        };
+        SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 150);
+        SDL_RenderFillRect(renderer->getSdlRenderer(), &rectDstRect);
         std::string infoText = "Подобрать предмет - P";
         SDL_Rect textDstRect{
             x: 0,
             y: 0,
-            w: spriteWidth / 8 * static_cast<int>(infoText.size()) / 40 * 24,
-            h: spriteHeight / 3
+            w: static_cast<int>(infoText.size()) * 7,
+            h: 18
         };
         std::string itemsText = "Предметы на клетке: ";
         for(Item* item : items){
@@ -138,8 +149,26 @@ void MainState::view() {
         text.draw(renderer, &textDstRect);
         text.setString(itemsText);
         textDstRect.y += textDstRect.h + 5;
-        textDstRect.w = spriteWidth / 8 * static_cast<int>(itemsText.size()) / 40 * 24;
+        textDstRect.w = static_cast<int>(itemsText.size()) * 5;
         text.draw(renderer, &textDstRect);
     }
-    game->getPlayer()->draw(renderer, &dstRect);
+}
+
+void MainState::drawPlayer(){
+    int viewRange = game->getViewRange();
+    int spriteWidth = game->getWindow()->getWidth() / viewRange;
+    int spriteHeight = game->getWindow()->getHeight() / viewRange;
+    SDL_Rect dstRect{
+        x: viewRange / 2 * spriteWidth,
+        y: viewRange / 2 * spriteHeight,
+        w: spriteWidth,
+        h: spriteHeight
+    };
+    game->getPlayer()->draw(game->getRenderer(), &dstRect);
+}
+
+void MainState::view(){
+    drawMap();
+    drawPickupInfoIfItemExists();
+    drawPlayer();
 }
