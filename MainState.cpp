@@ -130,16 +130,16 @@ void MainState::drawPickupInfoIfItemExists(){
             x: 0,
             y: 0,
             w: game->getWindow()->getWidth(),
-            h: 40
+            h: 70
         };
-        SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 150);
+        SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 200);
         SDL_RenderFillRect(renderer->getSdlRenderer(), &rectDstRect);
         std::string infoText = "Подобрать предмет - P";
         SDL_Rect textDstRect{
             x: 0,
-            y: 0,
-            w: static_cast<int>(infoText.size()) * 7,
-            h: 18
+            y: 5,
+            w: static_cast<int>(infoText.size()) * 8,
+            h: 16
         };
         std::string itemsText = "Предметы на клетке: ";
         for(Item* item : items){
@@ -148,7 +148,7 @@ void MainState::drawPickupInfoIfItemExists(){
         Text text(infoText, game->getFont(), TextRenderType::Quality);
         text.draw(renderer, &textDstRect);
         text.setString(itemsText);
-        textDstRect.y += textDstRect.h + 5;
+        textDstRect.y += textDstRect.h + 15;
         textDstRect.w = static_cast<int>(itemsText.size()) * 5;
         text.draw(renderer, &textDstRect);
     }
@@ -167,8 +167,42 @@ void MainState::drawPlayer(){
     game->getPlayer()->draw(game->getRenderer(), &dstRect);
 }
 
+void MainState::drawStats(){
+    Stats stats = game->getPlayer()->getStats();
+    Renderer* renderer = game->getRenderer();
+    Text text("Сила: " + std::to_string(stats.strength), game->getFont(), TextRenderType::Quality);
+    SDL_Rect backgroundDstRect{
+        x: 0,
+        y: game->getWindow()->getHeight() - 90,
+        w: game->getWindow()->getWidth() / 4,
+        h: 90
+    };
+    SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 100);
+    SDL_RenderFillRect(renderer->getSdlRenderer(), &backgroundDstRect);
+    SDL_Rect dstRect{
+        x: 0,
+        y: game->getWindow()->getHeight() - 80,
+        w: static_cast<int>(text.getString().size()) * 7,
+        h: 16
+    };
+    text.draw(renderer, &dstRect);
+    text.setString("Выносливость: " + std::to_string(stats.dexterity));
+    dstRect.w = static_cast<int>(text.getString().size()) * 6;
+    dstRect.y += 20;
+    text.draw(renderer, &dstRect);
+    text.setString("Ловкость: " + std::to_string(stats.stamina));
+    dstRect.w = static_cast<int>(text.getString().size()) * 6;
+    dstRect.y += 20;
+    text.draw(renderer, &dstRect);
+    text.setString("Интеллект: " + std::to_string(stats.intelligence));
+    dstRect.w = static_cast<int>(text.getString().size()) * 6;
+    dstRect.y += 20;
+    text.draw(renderer, &dstRect);
+}
+
 void MainState::view(){
     drawMap();
     drawPickupInfoIfItemExists();
     drawPlayer();
+    drawStats();
 }

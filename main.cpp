@@ -4,6 +4,8 @@
 #include "WorldException.h"
 #include "Game.h"
 #include "ErrorState.h"
+#include "MessagesStorage.h"
+#include "MessageException.h"
 
 void initErrorState(std::string errorStr){
     Game::init()->getWindow()->close();
@@ -15,15 +17,16 @@ void initErrorState(std::string errorStr){
 
 int main(){
     try{
+        MessagesStorage::loadMessages("assets/strings.txt");
         Game::initModules();
         Game* game = Game::init();
         game->openTilesSpriteAtlas("assets/Tiles.png", 10, 10);
         game->openPeopleSpriteAtlas("assets/People.png", 10, 10);
         game->openWeaponsSpriteAtlas("assets/Weapons.png", 10, 10);
-        game->openFont("assets/font.ttf", 48);
+        game->openFont("assets/font.otf", 48);
         game->initPlayer(1, 0);
         game->genWorld(50, 50);
-        game->setViewRange(11);
+        game->setViewRange(13);
         game->run();
         Game::unInit();
         Game::unInitModules();
@@ -35,6 +38,10 @@ int main(){
         initErrorState(errorStr);
     }catch(const WorldException& ex){
         std::string errorStr = "World exception: ";
+        errorStr += ex.what();
+        initErrorState(errorStr);
+    }catch(const MessageException& ex){
+        std::string errorStr = "Message exception: ";
         errorStr += ex.what();
         initErrorState(errorStr);
     }catch(std::exception& ex){

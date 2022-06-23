@@ -46,7 +46,7 @@ void PauseState::view(){
         x: game->getWindow()->getWidth() / 2,
         y: game->getWindow()->getHeight() / 2 - 24,
         w: static_cast<int>(titleText.getString().size()) * 8,
-        h: 24
+        h: 16
     };
     dstRect.x -= dstRect.w / 2;
     titleText.draw(renderer, &dstRect);
@@ -54,8 +54,8 @@ void PauseState::view(){
     SDL_Rect quitTextDstRect{
         x: 10,
         y: game->getWindow()->getHeight() - 40,
-        w: static_cast<int>(quitText.getString().size()) * 7,
-        h: 24
+        w: static_cast<int>(quitText.getString().size()) * 5,
+        h: 14
     };
     quitText.draw(renderer, &quitTextDstRect);
     renderer->update();

@@ -12,6 +12,7 @@ private:
     void drawMap();
     void drawPickupInfoIfItemExists();
     void drawPlayer();
+    void drawStats();
 public:
     MainState(Game* game);
     void handleEvents() override;

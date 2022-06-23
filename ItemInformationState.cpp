@@ -42,13 +42,13 @@ void ItemInformationState::view(){
         x: game->getWindow()->getWidth() / 2,
         y: 0,
         w: static_cast<int>(titleTextStr.size()) * game->getWindow()->getWidth() / 150,
-        h: 24
+        h: 16
     };
     dstRect.x -= dstRect.w / 2;
     titleText.draw(renderer, &dstRect);
     dstRect.x += dstRect.w + 5;
-    dstRect.h = 24;
-    dstRect.w = 24;
+    dstRect.h = 16;
+    dstRect.w = 16;
     item->draw(renderer, &dstRect);
     std::string itemDescriptionStr = item->getDescription();
     int yPos = 0;
@@ -60,7 +60,7 @@ void ItemInformationState::view(){
             x: 0,
             y: yPos,
             w: charPerLine * game->getWindow()->getWidth() / 120,
-            h: 24
+            h: 16
         };
         if(static_cast<int>(itemDescriptionStr.size()) < charPerLine){
             descriptionTextDstRect.w = static_cast<int>(itemDescriptionStr.size()) * game->getWindow()->getWidth() / 150;

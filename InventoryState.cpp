@@ -79,7 +79,7 @@ void InventoryState::view(){
         x: game->getWindow()->getWidth() / 2,
         y: 0,
         w: static_cast<int>(titleText.getString().size()) * game->getWindow()->getWidth() / 210,
-        h: 24
+        h: 16
     };
     dstRect.x -= dstRect.w / 2;
     titleText.draw(renderer, &dstRect);
@@ -90,13 +90,13 @@ void InventoryState::view(){
             x: 0,
             y: (i + 1) * 27,
             w: static_cast<int>(item->getName().size()) * 6,
-            h: 24
+            h: 16
         };
         SDL_Rect itemSpriteDstRect{
             x: itemTextDstRect.w + 5,
             y: (i + 1) * 27,
-            w: 20,
-            h: 20
+            w: 12,
+            h: 12
         };
         SDL_Color color{
             r: 255,
@@ -119,7 +119,7 @@ void InventoryState::view(){
         x: 0,
         y: game->getWindow()->getHeight() - 30,
         w: static_cast<int>(infoInventoryText.getString().size()) * game->getWindow()->getWidth() / 220,
-        h: 25
+        h: 16
     };
     infoInventoryText.draw(renderer, &infoInventoryTextDstRect);
     renderer->update();

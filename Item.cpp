@@ -4,6 +4,7 @@ Item::Item(std::string name, std::string description, SpriteAtlas* spriteAtlas, 
     assetSprite = spriteAtlas->getAssetSprite(spriteX, spriteY);
     this->name = name;
     this->description = description;
+    setItemType(ItemType::Undefined);
 }
 
 std::string Item::getName(){
@@ -16,4 +17,12 @@ std::string Item::getDescription(){
 
 void Item::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
     assetSprite.draw(renderer, dstRect);
+}
+
+void Item::setItemType(ItemType itemType){
+    this->itemType = itemType;
+}
+
+ItemType Item::getItemType(){
+    return itemType;
 }
