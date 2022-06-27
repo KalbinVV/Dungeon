@@ -23,6 +23,6 @@ void Item::setItemType(ItemType itemType){
     this->itemType = itemType;
 }
 
-ItemType Item::getItemType(){
+ItemType Item::getType(){
     return itemType;
 }

@@ -1,6 +1,7 @@
 #include "InventoryState.h"
 #include "Text.h"
 #include "ItemInformationState.h"
+#include "Weapon.h"
 
 InventoryState::InventoryState(Game* game, Player* player, IState* backgroundState){
     currentItemIndex = 0;
@@ -59,6 +60,14 @@ void InventoryState::handleEvents(){
                     if(items.size() != 0){
                         game->setState(new ItemInformationState(items[currentItemIndex], game, backgroundState));
                     }
+                    break;
+                }
+                case SDL_SCANCODE_E:{
+                    std::vector<Item*> items = game->getPlayer()->getInventory();
+                    if(items.size() != 0){
+                        items[currentItemIndex]->onUse(game->getPlayer());
+                    }
+                    break;
                 }
                 default:
                     break;
@@ -69,6 +78,18 @@ void InventoryState::handleEvents(){
 
 //Нет активного рендера
 void InventoryState::render(){}
+
+void InventoryState::drawStats(Stats stats, Renderer* renderer, int yPos){
+    Text statsText("Сила: " + std::to_string(stats.strength) + "; Ловкость: " + std::to_string(stats.dexterity) +
+        "; Выносливость: " + std::to_string(stats.stamina) + "; Интеллект: " + std::to_string(stats.intelligence), game->getFont(), TextRenderType::Quality);
+    SDL_Rect dstRect{
+        x: 0,
+        y: yPos,
+        w: static_cast<int>(statsText.getString().size()) * game->getWindow()->getWidth() / 210,
+        h: 12
+    };
+    statsText.draw(renderer, &dstRect);
+}
 
 void InventoryState::view(){
     Renderer* renderer = game->getRenderer();
@@ -88,13 +109,13 @@ void InventoryState::view(){
         Item* item = items[i];
         SDL_Rect itemTextDstRect{
             x: 0,
-            y: (i + 1) * 27,
-            w: static_cast<int>(item->getName().size()) * 6,
+            y: (i + 1) * 60,
+            w: static_cast<int>(item->getName().size()) * game->getWindow()->getWidth() / 190,
             h: 16
         };
         SDL_Rect itemSpriteDstRect{
             x: itemTextDstRect.w + 5,
-            y: (i + 1) * 27,
+            y: (i + 1) * 60,
             w: 12,
             h: 12
         };
@@ -113,8 +134,17 @@ void InventoryState::view(){
         Text itemText(item->getName(), game->getFont(), TextRenderType::Quality, color);
         itemText.draw(renderer, &itemTextDstRect);
         item->draw(renderer, &itemSpriteDstRect);
+        if(item->getType() == ItemType::Weapon){
+            Text itemTypeText("Тип: Оружие", game->getFont(), TextRenderType::Quality);
+            itemTextDstRect.w = static_cast<int>(itemTypeText.getString().size()) * game->getWindow()->getWidth() / 210;
+            itemTextDstRect.h = 12;
+            itemTextDstRect.y += 20;
+            itemTypeText.draw(renderer, &itemTextDstRect);
+            Stats stats = ( (Weapon*) item )->getStats();
+            drawStats(stats, renderer, (i + 1) * 60 + 40);
+        }
     }
-    Text infoInventoryText("i - информация о предмете; e - использовать предмет; d - выкинуть предмет; стрелки вверх/вниз - изменить текущий предмет", game->getFont(), TextRenderType::Quality);
+    Text infoInventoryText("i - информация о предмете; e - использовать/экипировать предмет; d - выкинуть предмет", game->getFont(), TextRenderType::Quality);
     SDL_Rect infoInventoryTextDstRect{
         x: 0,
         y: game->getWindow()->getHeight() - 30,

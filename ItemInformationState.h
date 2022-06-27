@@ -10,6 +10,7 @@ private:
     Item* item;
     Game* game;
     IState* backgroundState;
+    void drawStat(std::string statsValue, Renderer* renderer, int yPos);
 public:
     ItemInformationState(Item* item, Game* game, IState* backgroundState);
     void render() override;

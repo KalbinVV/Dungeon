@@ -26,7 +26,7 @@ int main(){
         game->openFont("assets/font.otf", 48);
         game->initPlayer(1, 0);
         game->genWorld(50, 50);
-        game->setViewRange(13);
+        game->setViewRange(11);
         game->run();
         Game::unInit();
         Game::unInitModules();

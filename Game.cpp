@@ -25,9 +25,9 @@ void Game::unInit(){
 }
 
 Game::Game(){
-    std::string windowTitle = "Dungeon";
-    int windowWidth = 800;
-    int windowHeight = 600;
+    const std::string windowTitle = "Dungeon";
+    const int windowWidth = 800;
+    const int windowHeight = 600;
     state = nullptr;
     worldMap = nullptr;
     player = nullptr;

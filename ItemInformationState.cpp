@@ -1,6 +1,7 @@
 #include "ItemInformationState.h"
 #include "Text.h"
 #include "InventoryState.h"
+#include "Weapon.h"
 
 ItemInformationState::ItemInformationState(Item* item, Game* game, IState* backgroundState){
     this->item = item;
@@ -29,6 +30,17 @@ void ItemInformationState::handleEvents(){
             }
         }
     }
+}
+
+void ItemInformationState::drawStat(std::string statsValue, Renderer* renderer, int yPos){
+    Text statsText(statsValue, game->getFont(), TextRenderType::Quality);
+    SDL_Rect statsTextDstRect{
+        x: 0,
+        y: yPos + 40,
+        w: static_cast<int>(statsText.getString().size()) * game->getWindow()->getWidth() / 190,
+        h: 16
+    };
+    statsText.draw(renderer, &statsTextDstRect);
 }
 
 void ItemInformationState::view(){
@@ -67,6 +79,17 @@ void ItemInformationState::view(){
         }
         descriptionText.draw(renderer, &descriptionTextDstRect);
         itemDescriptionStr.erase(0, charPerLine);
+    }
+    if(item->getType() == ItemType::Weapon){
+        Stats stats = ((Weapon*) item)->getStats();
+        drawStat("Сила - " + std::to_string(stats.strength), renderer, yPos);
+        yPos += 40;
+        drawStat("Ловкость - " + std::to_string(stats.dexterity), renderer, yPos);
+        yPos += 40;
+        drawStat("Выносливость - " + std::to_string(stats.stamina), renderer, yPos);
+        yPos += 40;
+        drawStat("Интеллект - " + std::to_string(stats.intelligence), renderer, yPos);
+        yPos += 40;
     }
     Text footerText("ESC - Вернуться в инвентарь", game->getFont(), TextRenderType::Quality);
     SDL_Rect footerTextDstRect{

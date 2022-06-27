@@ -170,7 +170,9 @@ void MainState::drawPlayer(){
 void MainState::drawStats(){
     Stats stats = game->getPlayer()->getStats();
     Renderer* renderer = game->getRenderer();
-    Text text("Сила: " + std::to_string(stats.strength), game->getFont(), TextRenderType::Quality);
+    Stats bonusStats = game->getPlayer()->getBonusStats();
+    Text text("Сила: " + std::to_string(stats.strength)
+        + " +" + std::to_string(bonusStats.strength), game->getFont(), TextRenderType::Quality);
     SDL_Rect backgroundDstRect{
         x: 0,
         y: game->getWindow()->getHeight() - 90,
@@ -186,15 +188,18 @@ void MainState::drawStats(){
         h: 16
     };
     text.draw(renderer, &dstRect);
-    text.setString("Выносливость: " + std::to_string(stats.dexterity));
+    text.setString("Ловкость: " + std::to_string(stats.dexterity)
+        + " +" + std::to_string(bonusStats.dexterity));
     dstRect.w = static_cast<int>(text.getString().size()) * 6;
     dstRect.y += 20;
     text.draw(renderer, &dstRect);
-    text.setString("Ловкость: " + std::to_string(stats.stamina));
+    text.setString("Выносливость: " + std::to_string(stats.stamina)
+        + " +" + std::to_string(bonusStats.stamina));
     dstRect.w = static_cast<int>(text.getString().size()) * 6;
     dstRect.y += 20;
     text.draw(renderer, &dstRect);
-    text.setString("Интеллект: " + std::to_string(stats.intelligence));
+    text.setString("Интеллект: " + std::to_string(stats.intelligence)
+        + " +" + std::to_string(bonusStats.intelligence));
     dstRect.w = static_cast<int>(text.getString().size()) * 6;
     dstRect.y += 20;
     text.draw(renderer, &dstRect);

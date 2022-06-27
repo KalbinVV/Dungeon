@@ -3,8 +3,7 @@
 
 #include "IState.h"
 #include "Game.h"
-#include <memory>
-#include <iostream>
+#include "Stats.h"
 
 class InventoryState : public IState{
 private:
@@ -13,6 +12,7 @@ private:
     IState* backgroundState;
     int currentItemIndex;
     void updateMenu();
+    void drawStats(Stats stats, Renderer* renderer, int yPos);
 public:
     InventoryState(Game* game, Player* player, IState* backgroundState);
     void handleEvents() override;
