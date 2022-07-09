@@ -96,14 +96,9 @@ void InventoryState::view(){
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 210);
     SDL_RenderFillRect(renderer->getSdlRenderer(), NULL);
     Text titleText("Инвентарь", game->getFont(), TextRenderType::Quality);
-    SDL_Rect dstRect{
-        x: game->getWindow()->getWidth() / 2,
-        y: 0,
-        w: static_cast<int>(titleText.getString().size()) * game->getWindow()->getWidth() / 210,
-        h: 16
-    };
-    dstRect.x -= dstRect.w / 2;
-    titleText.draw(renderer, &dstRect);
+    titleText.setCharacterSize(16);
+    titleText.setAlign(TextAlign::center);
+    titleText.draw(renderer);
     std::vector<Item*> items = game->getPlayer()->getInventory();
     for(int i = 0; i < static_cast<int>(items.size()); i++){
         Item* item = items[i];
@@ -145,13 +140,9 @@ void InventoryState::view(){
         }
     }
     Text infoInventoryText("i - информация о предмете; e - использовать/экипировать предмет; d - выкинуть предмет", game->getFont(), TextRenderType::Quality);
-    SDL_Rect infoInventoryTextDstRect{
-        x: 0,
-        y: game->getWindow()->getHeight() - 30,
-        w: static_cast<int>(infoInventoryText.getString().size()) * game->getWindow()->getWidth() / 220,
-        h: 16
-    };
-    infoInventoryText.draw(renderer, &infoInventoryTextDstRect);
+    infoInventoryText.setCharacterSize(12);
+    infoInventoryText.setPosition(Vec2i(0, game->getWindow()->getHeight() - 50));
+    infoInventoryText.draw(renderer);
     renderer->update();
 }
 

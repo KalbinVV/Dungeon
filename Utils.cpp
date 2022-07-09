@@ -11,3 +11,13 @@ std::vector<std::string> Utils::splitString(std::string src, std::string separat
     words.push_back(src.substr(firstPos, secondPos - firstPos));
     return words;
 }
+
+SDL_Rect Utils::convertVec2iToSdlRect(int spriteSize, Vec2i vec2i){
+    SDL_Rect rect{
+        x: vec2i.x,
+        y: vec2i.y,
+        w: spriteSize,
+        h: spriteSize
+    };
+    return rect;
+}
