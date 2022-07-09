@@ -7,6 +7,7 @@ public:
     int y;
     Vec2i();
     Vec2i(Vec2i* anotherVec2i);
+    Vec2i(int x, int y);
     Vec2i addX(int value);
     Vec2i addY(int value);
 };

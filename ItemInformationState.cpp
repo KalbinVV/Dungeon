@@ -34,13 +34,9 @@ void ItemInformationState::handleEvents(){
 
 void ItemInformationState::drawStat(std::string statsValue, Renderer* renderer, int yPos){
     Text statsText(statsValue, game->getFont(), TextRenderType::Quality);
-    SDL_Rect statsTextDstRect{
-        x: 0,
-        y: yPos + 40,
-        w: static_cast<int>(statsText.getString().size()) * game->getWindow()->getWidth() / 190,
-        h: 16
-    };
-    statsText.draw(renderer, &statsTextDstRect);
+    statsText.setCharacterSize(12);
+    statsText.setPosition(Vec2i(0, yPos));
+    statsText.draw(renderer);
 }
 
 void ItemInformationState::view(){
@@ -63,23 +59,13 @@ void ItemInformationState::view(){
     dstRect.w = 16;
     item->draw(renderer, &dstRect);
     std::string itemDescriptionStr = item->getDescription();
-    int yPos = 0;
     const int charPerLine = 100;
-    while(itemDescriptionStr.size() > 0){
-        yPos += 40;
-        Text descriptionText(itemDescriptionStr.substr(0, charPerLine), game->getFont(), TextRenderType::Quality);
-        SDL_Rect descriptionTextDstRect{
-            x: 0,
-            y: yPos,
-            w: charPerLine * game->getWindow()->getWidth() / 120,
-            h: 16
-        };
-        if(static_cast<int>(itemDescriptionStr.size()) < charPerLine){
-            descriptionTextDstRect.w = static_cast<int>(itemDescriptionStr.size()) * game->getWindow()->getWidth() / 150;
-        }
-        descriptionText.draw(renderer, &descriptionTextDstRect);
-        itemDescriptionStr.erase(0, charPerLine);
-    }
+    Text descriptionText(itemDescriptionStr, game->getFont(), TextRenderType::Quality);
+    descriptionText.setCharacterSize(16);
+    descriptionText.setCharPerLine(charPerLine);
+    descriptionText.setPosition(Vec2i(0, 40));
+    descriptionText.draw(renderer);
+    int yPos = descriptionText.getHeight() + descriptionText.getPosition().y;
     if(item->getType() == ItemType::Weapon){
         Stats stats = ((Weapon*) item)->getStats();
         drawStat("Сила - " + std::to_string(stats.strength), renderer, yPos);

@@ -1,11 +1,53 @@
 #include "Text.h"
 #include "RenderException.h"
 
-Text::Text(std::string text, Font* font, TextRenderType textRenderType, SDL_Color color){
+Text::Text(std::string text, Font* font, TextRenderType textRenderType , SDL_Color color){
     this->text = text;
     this->font = font;
     this->textRenderType = textRenderType;
     this->color = color;
+    this->characterSize = 12;
+    position.y = 0;
+    position.x = 0;
+    charPerLine = -1;
+}
+
+void Text::setPosition(Vec2i position){
+    this->position = position;
+}
+
+Vec2i Text::getPosition(){
+    return position;
+}
+
+void Text::setCharacterSize(int characterSize){
+    this->characterSize = characterSize;
+}
+
+int Text::getCharacterSize(){
+    return characterSize;
+}
+
+void Text::setCharPerLine(int charPerLine){
+    this->charPerLine = charPerLine;
+}
+
+int Text::getCharPerLine(){
+    return charPerLine;
+}
+
+int Text::getHeight(){
+    if(charPerLine < 0){
+        return characterSize;
+    }else{
+        std::string textCopy = text;
+        int height = 0;
+        while(textCopy.size() > 0){
+            height += Text(textCopy.substr(0, charPerLine), font, textRenderType).getHeight();
+            textCopy.erase(0, charPerLine);
+        }
+        return height;
+    }
 }
 
 void Text::setString(std::string text){
@@ -31,6 +73,28 @@ void Text::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
     if(texture == NULL){
         throw RenderException(SDL_GetError());
     }
-    SDL_RenderCopy(renderer->getSdlRenderer(), texture, srcRect, dstRect);
+    if(dstRect == NULL){
+        SDL_Rect textDstRect{
+            x: position.x,
+            y: position.y,
+            w: characterSize * static_cast<int>(text.size()) / 2,
+            h: characterSize
+        };
+        if(charPerLine < 0){
+            SDL_RenderCopy(renderer->getSdlRenderer(), texture, srcRect, &textDstRect);
+        }else{
+            std::string textCopy = text;
+            while(textCopy.size() > 0){
+                Text lineText(textCopy.substr(0, charPerLine), font, TextRenderType::Quality);
+                lineText.setPosition(getPosition());
+                lineText.setCharacterSize(characterSize);
+                lineText.draw(renderer);
+                textCopy.erase(0, charPerLine);
+                setPosition(getPosition().addY(20));
+            }
+        }
+    }else{
+        SDL_RenderCopy(renderer->getSdlRenderer(), texture, srcRect, dstRect);
+    }
     SDL_DestroyTexture(texture);
 }

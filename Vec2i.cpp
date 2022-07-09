@@ -10,6 +10,11 @@ Vec2i::Vec2i(Vec2i* anotherVec2i){
     this->y = anotherVec2i->y;
 }
 
+Vec2i::Vec2i(int x, int y){
+    this->x = x;
+    this->y = y;
+}
+
 Vec2i Vec2i::addX(int value){
     Vec2i resultVec(this);
     resultVec.x += value;

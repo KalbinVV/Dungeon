@@ -134,23 +134,17 @@ void MainState::drawPickupInfoIfItemExists(){
         };
         SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 200);
         SDL_RenderFillRect(renderer->getSdlRenderer(), &rectDstRect);
-        std::string infoText = "Подобрать предмет - P";
-        SDL_Rect textDstRect{
-            x: 0,
-            y: 5,
-            w: static_cast<int>(infoText.size()) * 8,
-            h: 16
-        };
-        std::string itemsText = "Предметы на клетке: ";
+        std::string itemsText = "";
         for(Item* item : items){
             itemsText += item->getName() + " ";
         }
-        Text text(infoText, game->getFont(), TextRenderType::Quality);
-        text.draw(renderer, &textDstRect);
+        Text text("Подобрать предмет - P", game->getFont(), TextRenderType::Quality);
+        text.setCharacterSize(14);
+        text.setPosition(Vec2i(0, 5));
+        text.draw(renderer);
         text.setString(itemsText);
-        textDstRect.y += textDstRect.h + 15;
-        textDstRect.w = static_cast<int>(itemsText.size()) * 5;
-        text.draw(renderer, &textDstRect);
+        text.setPosition(text.getPosition().addY(20));
+        text.draw(renderer);
     }
 }
 
@@ -173,6 +167,7 @@ void MainState::drawStats(){
     Stats bonusStats = game->getPlayer()->getBonusStats();
     Text text("Сила: " + std::to_string(stats.strength)
         + " +" + std::to_string(bonusStats.strength), game->getFont(), TextRenderType::Quality);
+    text.setCharacterSize(12);
     SDL_Rect backgroundDstRect{
         x: 0,
         y: game->getWindow()->getHeight() - 90,
@@ -181,28 +176,20 @@ void MainState::drawStats(){
     };
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 100);
     SDL_RenderFillRect(renderer->getSdlRenderer(), &backgroundDstRect);
-    SDL_Rect dstRect{
-        x: 0,
-        y: game->getWindow()->getHeight() - 80,
-        w: static_cast<int>(text.getString().size()) * 7,
-        h: 16
-    };
-    text.draw(renderer, &dstRect);
+    text.setPosition(Vec2i(0, game->getWindow()->getHeight() - 80));
+    text.draw(renderer);
     text.setString("Ловкость: " + std::to_string(stats.dexterity)
         + " +" + std::to_string(bonusStats.dexterity));
-    dstRect.w = static_cast<int>(text.getString().size()) * 6;
-    dstRect.y += 20;
-    text.draw(renderer, &dstRect);
+    text.setPosition(text.getPosition().addY(20));
+    text.draw(renderer);
     text.setString("Выносливость: " + std::to_string(stats.stamina)
         + " +" + std::to_string(bonusStats.stamina));
-    dstRect.w = static_cast<int>(text.getString().size()) * 6;
-    dstRect.y += 20;
-    text.draw(renderer, &dstRect);
+    text.setPosition(text.getPosition().addY(20));
+    text.draw(renderer);
     text.setString("Интеллект: " + std::to_string(stats.intelligence)
         + " +" + std::to_string(bonusStats.intelligence));
-    dstRect.w = static_cast<int>(text.getString().size()) * 6;
-    dstRect.y += 20;
-    text.draw(renderer, &dstRect);
+    text.setPosition(text.getPosition().addY(20));
+    text.draw(renderer);
 }
 
 void MainState::view(){
