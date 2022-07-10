@@ -2,6 +2,7 @@
 #include "Text.h"
 #include "ItemInformationState.h"
 #include "Weapon.h"
+#include "Utils.h"
 
 InventoryState::InventoryState(Game* game, Player* player, IState* backgroundState){
     currentItemIndex = 0;
@@ -81,14 +82,12 @@ void InventoryState::render(){}
 
 void InventoryState::drawStats(Stats stats, Renderer* renderer, int yPos){
     Text statsText("Сила: " + std::to_string(stats.strength) + "; Ловкость: " + std::to_string(stats.dexterity) +
-        "; Выносливость: " + std::to_string(stats.stamina) + "; Интеллект: " + std::to_string(stats.intelligence), game->getFont(), TextRenderType::Quality);
-    SDL_Rect dstRect{
-        x: 0,
-        y: yPos,
-        w: static_cast<int>(statsText.getString().size()) * game->getWindow()->getWidth() / 210,
-        h: 12
-    };
-    statsText.draw(renderer, &dstRect);
+        "; Выносливость: " + std::to_string(stats.stamina) + "; Интеллект: " + std::to_string(stats.intelligence),
+        game->getFont(), TextRenderType::Quality);
+    statsText.setPosition(Vec2i(0, yPos));
+    statsText.setCharacterSize(12);
+    statsText.setAlign(TextAlign::center);
+    statsText.draw(renderer);
 }
 
 void InventoryState::view(){
@@ -96,50 +95,33 @@ void InventoryState::view(){
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 210);
     SDL_RenderFillRect(renderer->getSdlRenderer(), NULL);
     Text titleText("Инвентарь", game->getFont(), TextRenderType::Quality);
-    titleText.setCharacterSize(16);
+    titleText.setCharacterSize(14);
     titleText.setAlign(TextAlign::center);
     titleText.draw(renderer);
     std::vector<Item*> items = game->getPlayer()->getInventory();
     for(int i = 0; i < static_cast<int>(items.size()); i++){
         Item* item = items[i];
-        SDL_Rect itemTextDstRect{
-            x: 0,
-            y: (i + 1) * 60,
-            w: static_cast<int>(item->getName().size()) * game->getWindow()->getWidth() / 190,
-            h: 16
-        };
-        SDL_Rect itemSpriteDstRect{
-            x: itemTextDstRect.w + 5,
-            y: (i + 1) * 60,
-            w: 12,
-            h: 12
-        };
-        SDL_Color color{
-            r: 255,
-            g: 255,
-            b: 255
-        };
-        if(i == currentItemIndex){
-            color = {
-                r: 0,
-                g: 0,
-                b: 255
-            };
-        }
+        SDL_Color color{r: 255,g: 255,b: 255};
+        if(i == currentItemIndex) color = {r: 0,g: 0,b: 255};
         Text itemText(item->getName(), game->getFont(), TextRenderType::Quality, color);
-        itemText.draw(renderer, &itemTextDstRect);
+        itemText.setPosition(Vec2i(0, (i + 1) * 60));
+        itemText.setCharacterSize(12);
+        itemText.setAlign(TextAlign::center);
+        SDL_Rect itemSpriteDstRect = Utils::convertVec2iToSdlRect(12, Vec2i(itemText.getX() + itemText.getWidth() / 2 + 5,
+            (i + 1) * 60));
+        itemText.draw(renderer);
         item->draw(renderer, &itemSpriteDstRect);
         if(item->getType() == ItemType::Weapon){
             Text itemTypeText("Тип: Оружие", game->getFont(), TextRenderType::Quality);
-            itemTextDstRect.w = static_cast<int>(itemTypeText.getString().size()) * game->getWindow()->getWidth() / 210;
-            itemTextDstRect.h = 12;
-            itemTextDstRect.y += 20;
-            itemTypeText.draw(renderer, &itemTextDstRect);
+            itemTypeText.setPosition(itemText.getPosition().addY(15));
+            itemTypeText.setAlign(TextAlign::center);
+            itemTypeText.draw(renderer);
             Stats stats = ( (Weapon*) item )->getStats();
-            drawStats(stats, renderer, (i + 1) * 60 + 40);
+            drawStats(stats, renderer, (i + 1) * 60 + 30);
         }
     }
-    Text infoInventoryText("i - информация о предмете; e - использовать/экипировать предмет; d - выкинуть предмет", game->getFont(), TextRenderType::Quality);
+    Text infoInventoryText("i - информация о предмете; e - использовать/экипировать предмет; d - выкинуть предмет",
+        game->getFont(), TextRenderType::Quality);
     infoInventoryText.setCharacterSize(12);
     infoInventoryText.setPosition(Vec2i(0, game->getWindow()->getHeight() - 50));
     infoInventoryText.draw(renderer);

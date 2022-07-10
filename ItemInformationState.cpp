@@ -53,7 +53,7 @@ void ItemInformationState::view(){
     SDL_Rect spriteItemRect = Utils::convertVec2iToSdlRect(12, Vec2i(titleText.getX() + titleText.getWidth() / 2, 0));
     item->draw(renderer, &spriteItemRect);
     std::string itemDescriptionStr = item->getDescription();
-    const int charPerLine = 140;
+    const int charPerLine = 100;
     Text descriptionText(itemDescriptionStr, game->getFont(), TextRenderType::Quality);
     descriptionText.setCharacterSize(18);
     descriptionText.setCharPerLine(charPerLine);

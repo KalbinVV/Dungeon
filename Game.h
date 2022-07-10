@@ -8,6 +8,7 @@
 #include "WorldMap.h"
 #include "Player.h"
 #include "Font.h"
+#include "ConsoleLogger.h"
 #include <string>
 #include <memory>
 
@@ -24,12 +25,14 @@ private:
     IState* state;
     int viewRange;
     static Game* uniquePtr;
+    ConsoleLogger logger;
     Game();
 public:
     static void initModules();
     static void unInitModules();
     static Game* init();
     static void unInit();
+    ILogger* getLogger();
     Window* getWindow();
     Renderer* getRenderer();
     void openFont(std::string fontSrc, int characterSize);

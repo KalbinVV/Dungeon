@@ -42,22 +42,15 @@ void PauseState::view(){
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 210);
     SDL_RenderFillRect(renderer->getSdlRenderer(), NULL);
     Text titleText("Пауза", game->getFont(), TextRenderType::Quality);
-    SDL_Rect dstRect{
-        x: game->getWindow()->getWidth() / 2,
-        y: game->getWindow()->getHeight() / 2 - 24,
-        w: static_cast<int>(titleText.getString().size()) * 8,
-        h: 16
-    };
-    dstRect.x -= dstRect.w / 2;
-    titleText.draw(renderer, &dstRect);
+    titleText.setCharacterSize(14);
+    titleText.setAlign(TextAlign::center);
+    titleText.setPosition(Vec2i(0, game->getWindow()->getHeight() / 2));
+    titleText.draw(renderer);
     Text quitText("Q - Выйти", game->getFont(), TextRenderType::Quality);
-    SDL_Rect quitTextDstRect{
-        x: 10,
-        y: game->getWindow()->getHeight() - 40,
-        w: static_cast<int>(quitText.getString().size()) * 5,
-        h: 14
-    };
-    quitText.draw(renderer, &quitTextDstRect);
+    quitText.setCharacterSize(12);
+    quitText.setPosition(Vec2i(0, game->getWindow()->getHeight() - 40));
+    quitText.setAlign(TextAlign::center);
+    quitText.draw(renderer);
     renderer->update();
 }
 

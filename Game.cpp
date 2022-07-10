@@ -24,6 +24,10 @@ void Game::unInit(){
     if(uniquePtr) delete uniquePtr;
 }
 
+ILogger* Game::getLogger(){
+    return &logger;
+}
+
 Game::Game(){
     const std::string windowTitle = "Dungeon";
     const int windowWidth = 800;

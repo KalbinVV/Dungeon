@@ -31,7 +31,7 @@ void Text::setCharacterSize(int characterSize){
 int Text::getCharacterSize(){
     if(isConsideredByScreenResolution()){
         Window* window = Game::init()->getWindow();
-        return characterSize * (static_cast<float>(window->getWidth()) / 1300.0);
+        return characterSize * (static_cast<float>(window->getWidth()) / 1100.0);
     }
     return characterSize;
 }
@@ -136,6 +136,7 @@ void Text::draw(Renderer* renderer, SDL_Rect* dstRect, SDL_Rect* srcRect){
             }
         }
     }else{
+        Game::init()->getLogger()->warning("Use deprecated version of text");
         SDL_RenderCopy(renderer->getSdlRenderer(), texture, srcRect, dstRect);
     }
     SDL_DestroyTexture(texture);
