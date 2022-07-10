@@ -2,9 +2,11 @@
 #include "WorldException.h"
 #include "Weapon.h"
 #include "MessagesStorage.h"
+#include "Armor.h"
 
 std::map<std::string, int> ItemsBuilder::itemIDs = {
-    {"testSword", 0}
+    {"testSword", 0},
+    {"testArmor", 1}
 };
 
 Item* ItemsBuilder::genItem(SpriteAtlas* spriteAtlas, std::string itemID){
@@ -19,6 +21,16 @@ Item* ItemsBuilder::genItem(SpriteAtlas* spriteAtlas, std::string itemID){
                 MessagesStorage::getMessage("testSword"),
                 {strength: 1,
                 dexterity: 2,
+                stamina: 3,
+                intelligence: 4},
+                spriteAtlas, 0, 0);
+            break;
+        }
+        case 1:{
+            item = new Armor("Тестовая броня",
+                MessagesStorage::getMessage("testSword"),
+                {strength: -1,
+                dexterity:0,
                 stamina: 3,
                 intelligence: 4},
                 spriteAtlas, 0, 0);

@@ -3,14 +3,15 @@
 
 Weapon::Weapon(std::string name, std::string description, Stats stats, SpriteAtlas* spriteAtlas, int spriteX, int spriteY)
 : Item(name, description, spriteAtlas, spriteX, spriteY){
-    this->stats = stats;
+    setStats(stats);
     setItemType(ItemType::Weapon);
 }
 
-Stats Weapon::getStats(){
-    return stats;
-}
-
 void Weapon::onUse(Entity* entity){
-    ( (Human*) entity)->setWeapon(this);
+    Human* human = (Human*)entity;
+    if(human->getWeapon() == this){
+        human->setWeapon(nullptr);
+    }else{
+        human->setWeapon(this);
+    }
 }

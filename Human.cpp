@@ -28,10 +28,21 @@ Weapon* Human::getWeapon(){
     return equipment.getWeapon();
 }
 
+void Human::setArmor(Armor* armor){
+    equipment.setArmor(armor);
+}
+
+Armor* Human::getArmor(){
+    return equipment.getArmor();
+}
+
 int Human::getStrengthBonus(){
     int strengthBonus = 0;
     if(equipment.getWeapon() != nullptr){
         strengthBonus += equipment.getWeapon()->getStats().strength;
+    }
+    if(equipment.getArmor() != nullptr){
+        strengthBonus += equipment.getArmor()->getStats().strength;
     }
     return strengthBonus;
 }
@@ -41,6 +52,9 @@ int Human::getDexterityBonus(){
     if(equipment.getWeapon() != nullptr){
         dexterityBonus += equipment.getWeapon()->getStats().dexterity;
     }
+    if(equipment.getArmor() != nullptr){
+        dexterityBonus += equipment.getArmor()->getStats().dexterity;
+    }
     return dexterityBonus;
 }
 
@@ -49,6 +63,9 @@ int Human::getStaminaBonus(){
     if(equipment.getWeapon() != nullptr){
         staminaBonus += equipment.getWeapon()->getStats().stamina;
     }
+    if(equipment.getArmor() != nullptr){
+        staminaBonus += equipment.getArmor()->getStats().stamina;
+    }
     return staminaBonus;
 }
 
@@ -56,6 +73,9 @@ int Human::getIntelligenceBonus(){
     int intelligenceBonus = 0;
     if(equipment.getWeapon() != nullptr){
         intelligenceBonus += equipment.getWeapon()->getStats().intelligence;
+    }
+    if(equipment.getArmor() != nullptr){
+        intelligenceBonus += equipment.getArmor()->getStats().intelligence;
     }
     return intelligenceBonus;
 }

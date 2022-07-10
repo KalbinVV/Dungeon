@@ -3,6 +3,7 @@
 #include "InventoryState.h"
 #include "Weapon.h"
 #include "Utils.h"
+#include "EquipmentItem.h"
 
 ItemInformationState::ItemInformationState(Item* item, Game* game, IState* backgroundState){
     this->item = item;
@@ -45,7 +46,12 @@ void ItemInformationState::view(){
     backgroundState->view();
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 210);
     SDL_RenderFillRect(renderer->getSdlRenderer(), NULL);
-    Text titleText(item->getName(), game->getFont(), TextRenderType::Quality);
+    std::string itemName = item->getName();
+    Player* player = game->getPlayer();
+    if(item == player->getWeapon() || item == player->getArmor()){
+        itemName += " [Экипировано]";
+    }
+    Text titleText(itemName, game->getFont(), TextRenderType::Quality);
     titleText.setCharacterSize(16);
     titleText.setPosition(Vec2i(0, 0));
     titleText.setAlign(TextAlign::center);
@@ -62,8 +68,9 @@ void ItemInformationState::view(){
     descriptionText.setConsideredByScreenResolution(false);
     descriptionText.draw(renderer);
     int yPos = descriptionText.getHeight() + descriptionText.getPosition().y + 40;
-    if(item->getType() == ItemType::Weapon){
-        Stats stats = ((Weapon*) item)->getStats();
+    ItemType itemType = item->getType();
+    if(itemType == ItemType::Weapon || itemType == ItemType::Armor){
+        Stats stats = dynamic_cast<EquipmentItem*>(item)->getStats();
         drawStat("Сила - " + std::to_string(stats.strength), renderer, yPos);
         yPos += 20;
         drawStat("Ловкость - " + std::to_string(stats.dexterity), renderer, yPos);

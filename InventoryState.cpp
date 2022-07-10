@@ -3,6 +3,7 @@
 #include "ItemInformationState.h"
 #include "Weapon.h"
 #include "Utils.h"
+#include "EquipmentItem.h"
 
 InventoryState::InventoryState(Game* game, Player* player, IState* backgroundState){
     currentItemIndex = 0;
@@ -49,7 +50,10 @@ void InventoryState::handleEvents(){
                     std::vector<Item*> items = game->getPlayer()->getInventory();
                     if(items.size() > 0){
                         Item* item = items[currentItemIndex];
-                        game->getPlayer()->removeItem(item);
+                        if(item == player->getWeapon()){
+                            player->setWeapon(nullptr);
+                        }
+                        player->removeItem(item);
                         Vec2i coords = game->getPlayer()->getCoords();
                         game->getTileAt(coords.y, coords.x)->addItem(item);
                         updateMenu();
@@ -67,6 +71,7 @@ void InventoryState::handleEvents(){
                     std::vector<Item*> items = game->getPlayer()->getInventory();
                     if(items.size() != 0){
                         items[currentItemIndex]->onUse(game->getPlayer());
+                        updateMenu();
                     }
                     break;
                 }
@@ -103,7 +108,11 @@ void InventoryState::view(){
         Item* item = items[i];
         SDL_Color color{r: 255,g: 255,b: 255};
         if(i == currentItemIndex) color = {r: 0,g: 0,b: 255};
-        Text itemText(item->getName(), game->getFont(), TextRenderType::Quality, color);
+        std::string itemName = item->getName();
+        if(item == player->getWeapon() || item == player->getArmor()){
+            itemName += " [Экипировано]";
+        }
+        Text itemText(itemName, game->getFont(), TextRenderType::Quality, color);
         itemText.setPosition(Vec2i(0, (i + 1) * 60));
         itemText.setCharacterSize(12);
         itemText.setAlign(TextAlign::center);
@@ -111,12 +120,19 @@ void InventoryState::view(){
             (i + 1) * 60));
         itemText.draw(renderer);
         item->draw(renderer, &itemSpriteDstRect);
-        if(item->getType() == ItemType::Weapon){
-            Text itemTypeText("Тип: Оружие", game->getFont(), TextRenderType::Quality);
+        ItemType itemType = item->getType();
+        if(itemType == ItemType::Weapon || itemType == ItemType::Armor){
+            std::string itemTypeTitle;
+            if(itemType == ItemType::Weapon){
+                itemTypeTitle = "Тип: Оружие";
+            }else{
+                itemTypeTitle = "Тип: Броня";
+            }
+            Text itemTypeText(itemTypeTitle, game->getFont(), TextRenderType::Quality);
             itemTypeText.setPosition(itemText.getPosition().addY(15));
             itemTypeText.setAlign(TextAlign::center);
             itemTypeText.draw(renderer);
-            Stats stats = ( (Weapon*) item )->getStats();
+            Stats stats = dynamic_cast<EquipmentItem*>(item)->getStats();
             drawStats(stats, renderer, (i + 1) * 60 + 30);
         }
     }

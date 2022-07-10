@@ -3,13 +3,11 @@
 
 #include "Item.h"
 #include "Stats.h"
+#include "EquipmentItem.h"
 
-class Weapon : public Item{
-private:
-    Stats stats;
+class Weapon : public Item, public EquipmentItem{
 public:
     Weapon(std::string name, std::string description, Stats stats, SpriteAtlas* spriteAtlas, int spriteX, int spriteY);
-    Stats getStats();
     virtual void onUse(Entity* entity) override;
 };
 

@@ -65,7 +65,7 @@ WorldMap::WorldMap(int width, int height){
     coords.x = randRect.x + 1;
     coords.y = randRect.y + 1;
     get(coords.y, coords.x + 1)->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
-    get(coords.y, coords.x + 1)->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
+    get(coords.y, coords.x + 1)->addItem(ItemsBuilder::genItem(game->getArmorsSpriteAtlas(), "testArmor"));
     game->getPlayer()->setCoords(&coords);
 }
 

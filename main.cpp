@@ -23,6 +23,7 @@ int main(){
         game->openTilesSpriteAtlas("assets/Tiles.png", 10, 10);
         game->openPeopleSpriteAtlas("assets/People.png", 10, 10);
         game->openWeaponsSpriteAtlas("assets/Weapons.png", 10, 10);
+        game->openArmorsSpriteAtlas("assets/Armors.png", 10, 10);
         game->openFont("assets/font.ttf", 64);
         game->initPlayer(1, 0);
         game->genWorld(50, 50);
