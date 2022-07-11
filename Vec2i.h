@@ -10,6 +10,7 @@ public:
     Vec2i(int x, int y);
     Vec2i addX(int value);
     Vec2i addY(int value);
+    int distance(Vec2i anotherVec);
 };
 
 #endif // VEC2I_H_INCLUDED

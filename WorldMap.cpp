@@ -5,6 +5,7 @@
 #include "WorldException.h"
 #include "TilesBuilder.h"
 #include "ItemsBuilder.h"
+#include "EntitiesBuilder.h"
 
 WorldMap::WorldMap(int width, int height){
     srand(time(0));
@@ -67,6 +68,9 @@ WorldMap::WorldMap(int width, int height){
     get(coords.y, coords.x + 1)->addItem(ItemsBuilder::genItem(game->getWeaponsSpriteAtlas(), "testSword"));
     get(coords.y, coords.x + 2)->addItem(ItemsBuilder::genItem(game->getArmorsSpriteAtlas(), "testArmor"));
     get(coords.y + 1, coords.x)->addItem(ItemsBuilder::genItem(game->getJewerlySpriteAtlas(), "testRing"));
+    Entity* testEnemy = EntitiesBuilder::genEntity(game->getCreaturesSpriteAtlas(), "testEnemy");
+    testEnemy->setCoords(Vec2i(coords.x + 5, coords.y + 5));
+    spawnEntity(testEnemy);
     game->getPlayer()->setCoords(&coords);
 }
 
@@ -87,6 +91,18 @@ int WorldMap::getWidth(){
 
 int WorldMap::getHeight(){
     return height;
+}
+
+const std::list<Entity*>& WorldMap::getEntities(){
+    return entities;
+}
+
+void WorldMap::spawnEntity(Entity* entity){
+    entities.push_back(entity);
+}
+
+void WorldMap::removeEntity(Entity* entity){
+    entities.remove(entity);
 }
 
 WorldMap::~WorldMap(){

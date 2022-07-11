@@ -13,13 +13,20 @@ private:
     std::string name;
     std::string description;
     Vec2i coords;
+    int currentHp;
+    int maxHp;
 public:
-    Entity(std::string name, std::string description, SpriteAtlas* spriteAtlas, int spriteX, int spriteY);
+    Entity(std::string name, std::string description, SpriteAtlas* spriteAtlas, int spriteX, int spriteY, int maxHp);
     std::string getName();
     std::string getDescription();
     Vec2i getCoords();
     void setCoords(Vec2i coords);
     void draw(Renderer* renderer, SDL_Rect* dstRect = NULL, SDL_Rect* srcRect = NULL) override;
+    int getCurrentHp();
+    int getMaxHp();
+    void setCurrentHp(int currentHp);
+    void setMaxHp(int maxHp);
+    virtual void onTurn() {};
 };
 
 #endif // ENTITY_H_INCLUDED

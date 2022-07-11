@@ -1,4 +1,5 @@
 #include "Vec2i.h"
+#include <cmath>
 
 Vec2i::Vec2i(){
     x = 0;
@@ -25,4 +26,9 @@ Vec2i Vec2i::addY(int value){
     Vec2i resultVec(this);
     resultVec.y += value;
     return resultVec;
+}
+
+
+int Vec2i::distance(Vec2i anotherVec){
+    return std::sqrt(std::pow(anotherVec.x - x, 2) + std::pow(anotherVec.y - y, 2));
 }

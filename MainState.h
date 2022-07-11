@@ -13,6 +13,7 @@ private:
     void drawPickupInfoIfItemExists();
     void drawPlayer();
     void drawStats();
+    void updateEnvironment();
 public:
     MainState(Game* game);
     void handleEvents() override;

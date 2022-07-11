@@ -187,9 +187,34 @@ void MainState::drawStats(){
     text.draw(renderer);
 }
 
+void MainState::updateEnvironment(){
+    const std::list<Entity*> entities = game->getEntities();
+    const int viewRange = game->getViewRange();
+    const int spriteWidth = game->getWindow()->getWidth() / viewRange;
+    const int spriteHeight = game->getWindow()->getHeight() / viewRange;
+    for(Entity* entity : entities){
+        entity->onTurn();
+        Vec2i entityCoords = entity->getCoords();
+        Vec2i playerCoords = game->getPlayer()->getCoords();
+        int distance = entityCoords.distance(playerCoords);
+        std::cout << "DISTANCE: " << distance << std::endl;
+        if(entityCoords.distance(playerCoords) <= viewRange){
+            std::cout << "YES" << std::endl;
+            SDL_Rect dstRect{
+                x: (entityCoords.x - playerCoords.x + (viewRange / 2) ) * spriteWidth,
+                y: (entityCoords.y - playerCoords.y + (viewRange / 2) ) * spriteHeight,
+                w: spriteWidth,
+                h: spriteHeight
+            };
+            entity->draw(game->getRenderer(), &dstRect);
+        }
+    }
+}
+
 void MainState::view(){
     drawMap();
     drawPickupInfoIfItemExists();
     drawPlayer();
+    updateEnvironment();
     drawStats();
 }

@@ -2,7 +2,7 @@
 #include "Game.h"
 
 Player::Player(SpriteAtlas* spriteAtlas, int spriteX, int spriteY)
-: Human("Человек", "Это - вы", spriteAtlas, spriteX, spriteY) {
+: Human("Человек", "Это - вы", spriteAtlas, spriteX, spriteY, 100) {
     stats = {
         strength: 100,
         dexterity: 2,

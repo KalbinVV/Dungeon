@@ -47,6 +47,6 @@ void Tile::removeItem(Item* item){
     items.erase(it);
 }
 
-void Tile::onMove(Player* player, Vec2i coords){
-    player->setCoords(coords);
+void Tile::onMove(Entity* entity, Vec2i coords){
+    entity->setCoords(coords);
 }

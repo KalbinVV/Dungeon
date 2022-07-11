@@ -105,6 +105,14 @@ SpriteAtlas* Game::getJewerlySpriteAtlas(){
     return &jewelrySpriteAtlas;
 }
 
+void Game::openCreaturesSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight){
+    creaturesSpriteAtlas.open(imageSrc, &renderer, tileWidth, tileHeight);
+}
+
+SpriteAtlas* Game::getCreaturesSpriteAtlas(){
+    return &creaturesSpriteAtlas;
+}
+
 void Game::genWorld(int width, int height){
     worldMap = std::make_unique<WorldMap>(width, height);
 }
@@ -135,6 +143,10 @@ int Game::getWorldWidth(){
 
 int Game::getWorldHeight(){
     return worldMap->getHeight();
+}
+
+const std::list<Entity*> Game::getEntities(){
+    return worldMap->getEntities();
 }
 
 void Game::run(){

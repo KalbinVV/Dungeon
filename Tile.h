@@ -3,7 +3,7 @@
 
 #include "ISprite.h"
 #include "SpriteAtlas.h"
-#include "Player.h"
+#include "Entity.h"
 #include "Item.h"
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ public:
     virtual std::vector<Item*> getItems();
     virtual void addItem(Item* item);
     virtual void removeItem(Item* item);
-    virtual void onMove(Player* player, Vec2i coords);
+    virtual void onMove(Entity* entity, Vec2i coords);
     virtual void onInteract() {};
     virtual ~Tile() {};
 };

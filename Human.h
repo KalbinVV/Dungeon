@@ -11,7 +11,7 @@ private:
     std::vector<Item*> inventory;
     Equipment equipment;
 public:
-    Human(std::string name, std::string description, SpriteAtlas* spriteAtlas, int spriteX, int spriteY);
+    Human(std::string name, std::string description, SpriteAtlas* spriteAtlas, int spriteX, int spriteY, int maxHp);
     void addItem(Item* item) override;
     void removeItem(Item* item) override;
     std::vector<Item*> getInventory() override;
