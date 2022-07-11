@@ -2,7 +2,6 @@
 #define WEAPON_H_INCLUDED
 
 #include "Item.h"
-#include "Stats.h"
 #include "EquipmentItem.h"
 
 class Weapon : public Item, public EquipmentItem{

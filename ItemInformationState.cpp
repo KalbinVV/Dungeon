@@ -47,8 +47,8 @@ void ItemInformationState::view(){
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 210);
     SDL_RenderFillRect(renderer->getSdlRenderer(), NULL);
     std::string itemName = item->getName();
-    Player* player = game->getPlayer();
-    if(item == player->getWeapon() || item == player->getArmor()){
+    Equipment* equipment = game->getPlayer()->getEquipment();
+    if(item == equipment->getWeapon() || item == equipment->getArmor() || item == equipment->getAccessory()){
         itemName += " [Экипировано]";
     }
     Text titleText(itemName, game->getFont(), TextRenderType::Quality);
@@ -69,7 +69,7 @@ void ItemInformationState::view(){
     descriptionText.draw(renderer);
     int yPos = descriptionText.getHeight() + descriptionText.getPosition().y + 40;
     ItemType itemType = item->getType();
-    if(itemType == ItemType::Weapon || itemType == ItemType::Armor){
+    if(itemType == ItemType::Weapon || itemType == ItemType::Armor || itemType == ItemType::Accessory){
         Stats stats = dynamic_cast<EquipmentItem*>(item)->getStats();
         drawStat("Сила - " + std::to_string(stats.strength), renderer, yPos);
         yPos += 20;

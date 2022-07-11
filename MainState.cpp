@@ -49,11 +49,6 @@ void MainState::handleEvents(){
                     updateScreen();
                     break;
                 }
-                case SDL_SCANCODE_E:{
-                    Vec2i coords = game->getPlayer()->getCoords();
-                    std::cout << game->getTileAt(coords.y, coords.x)->getName() << std::endl;
-                    break;
-                }
                 case SDL_SCANCODE_P:{
                     Vec2i coords = game->getPlayer()->getCoords();
                     std::vector<Item*> items = game->getTileAt(coords.y, coords.x)->getItems();

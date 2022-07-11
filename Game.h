@@ -21,6 +21,7 @@ private:
     SpriteAtlas peopleSpriteAtlas;
     SpriteAtlas weaponsSpriteAtlas;
     SpriteAtlas armorsSpriteAtlas;
+    SpriteAtlas jewelrySpriteAtlas;
     std::unique_ptr<WorldMap> worldMap;
     std::unique_ptr<Player> player;
     IState* state;
@@ -48,6 +49,8 @@ public:
     SpriteAtlas* getWeaponsSpriteAtlas();
     void openArmorsSpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
     SpriteAtlas* getArmorsSpriteAtlas();
+    void openJewelrySpriteAtlas(std::string imageSrc, int tileWidth, int tileHeight);
+    SpriteAtlas* getJewerlySpriteAtlas();
     void genWorld(int width, int height);
     void setViewRange(int viewRange);
     int getViewRange();

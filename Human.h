@@ -15,10 +15,7 @@ public:
     void addItem(Item* item) override;
     void removeItem(Item* item) override;
     std::vector<Item*> getInventory() override;
-    void setWeapon(Weapon* weapon);
-    Weapon* getWeapon();
-    void setArmor(Armor* armor);
-    Armor* getArmor();
+    Equipment* getEquipment();
     int getStrengthBonus();
     int getDexterityBonus();
     int getStaminaBonus();

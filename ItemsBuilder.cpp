@@ -3,10 +3,12 @@
 #include "Weapon.h"
 #include "MessagesStorage.h"
 #include "Armor.h"
+#include "Accessory.h"
 
 std::map<std::string, int> ItemsBuilder::itemIDs = {
     {"testSword", 0},
-    {"testArmor", 1}
+    {"testArmor", 1},
+    {"testRing", 2}
 };
 
 Item* ItemsBuilder::genItem(SpriteAtlas* spriteAtlas, std::string itemID){
@@ -34,6 +36,16 @@ Item* ItemsBuilder::genItem(SpriteAtlas* spriteAtlas, std::string itemID){
                 stamina: 3,
                 intelligence: 4},
                 spriteAtlas, 0, 0);
+            break;
+        }
+        case 2:{
+            item = new Accessory("Тестовое кольцо",
+                MessagesStorage::getMessage("testSword"),
+                {strength: 0,
+                dexterity:0,
+                stamina: 50,
+                intelligence: 0},
+                spriteAtlas, 1, 0);
             break;
         }
         default:

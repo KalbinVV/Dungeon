@@ -20,20 +20,8 @@ std::vector<Item*> Human::getInventory(){
     return inventory;
 }
 
-void Human::setWeapon(Weapon* weapon){
-    equipment.setWeapon(weapon);
-}
-
-Weapon* Human::getWeapon(){
-    return equipment.getWeapon();
-}
-
-void Human::setArmor(Armor* armor){
-    equipment.setArmor(armor);
-}
-
-Armor* Human::getArmor(){
-    return equipment.getArmor();
+Equipment* Human::getEquipment(){
+    return &equipment;
 }
 
 int Human::getStrengthBonus(){
@@ -43,6 +31,9 @@ int Human::getStrengthBonus(){
     }
     if(equipment.getArmor() != nullptr){
         strengthBonus += equipment.getArmor()->getStats().strength;
+    }
+    if(equipment.getAccessory() != nullptr){
+        strengthBonus += equipment.getAccessory()->getStats().strength;
     }
     return strengthBonus;
 }
@@ -55,6 +46,9 @@ int Human::getDexterityBonus(){
     if(equipment.getArmor() != nullptr){
         dexterityBonus += equipment.getArmor()->getStats().dexterity;
     }
+    if(equipment.getAccessory() != nullptr){
+        dexterityBonus += equipment.getAccessory()->getStats().dexterity;
+    }
     return dexterityBonus;
 }
 
@@ -66,6 +60,9 @@ int Human::getStaminaBonus(){
     if(equipment.getArmor() != nullptr){
         staminaBonus += equipment.getArmor()->getStats().stamina;
     }
+    if(equipment.getAccessory() != nullptr){
+        staminaBonus += equipment.getAccessory()->getStats().stamina;
+    }
     return staminaBonus;
 }
 
@@ -76,6 +73,9 @@ int Human::getIntelligenceBonus(){
     }
     if(equipment.getArmor() != nullptr){
         intelligenceBonus += equipment.getArmor()->getStats().intelligence;
+    }
+    if(equipment.getAccessory() != nullptr){
+        intelligenceBonus += equipment.getAccessory()->getStats().intelligence;
     }
     return intelligenceBonus;
 }

@@ -50,8 +50,9 @@ void InventoryState::handleEvents(){
                     std::vector<Item*> items = game->getPlayer()->getInventory();
                     if(items.size() > 0){
                         Item* item = items[currentItemIndex];
-                        if(item == player->getWeapon()){
-                            player->setWeapon(nullptr);
+                        Equipment* equipment = player->getEquipment();
+                        if(item == equipment->getWeapon()){
+                            equipment->setWeapon(nullptr);
                         }
                         player->removeItem(item);
                         Vec2i coords = game->getPlayer()->getCoords();
@@ -109,7 +110,8 @@ void InventoryState::view(){
         SDL_Color color{r: 255,g: 255,b: 255};
         if(i == currentItemIndex) color = {r: 0,g: 0,b: 255};
         std::string itemName = item->getName();
-        if(item == player->getWeapon() || item == player->getArmor()){
+        Equipment* equipment = player->getEquipment();
+        if(item == equipment->getWeapon() || item == equipment->getArmor() || item == equipment->getAccessory()){
             itemName += " [Экипировано]";
         }
         Text itemText(itemName, game->getFont(), TextRenderType::Quality, color);
@@ -121,12 +123,14 @@ void InventoryState::view(){
         itemText.draw(renderer);
         item->draw(renderer, &itemSpriteDstRect);
         ItemType itemType = item->getType();
-        if(itemType == ItemType::Weapon || itemType == ItemType::Armor){
+        if(itemType == ItemType::Weapon || itemType == ItemType::Armor || itemType == ItemType::Accessory){
             std::string itemTypeTitle;
             if(itemType == ItemType::Weapon){
                 itemTypeTitle = "Тип: Оружие";
-            }else{
+            }else if(itemType == ItemType::Armor){
                 itemTypeTitle = "Тип: Броня";
+            }else{
+                itemTypeTitle = "Тип: Аксессуар";
             }
             Text itemTypeText(itemTypeTitle, game->getFont(), TextRenderType::Quality);
             itemTypeText.setPosition(itemText.getPosition().addY(15));

@@ -9,9 +9,10 @@ Armor::Armor(std::string name, std::string description, Stats stats, SpriteAtlas
 
 void Armor::onUse(Entity* entity){
     Human* human = (Human*)entity;
-    if(human->getArmor() == this){
-        human->setArmor(nullptr);
+    Equipment* equipment = human->getEquipment();
+    if(equipment->getArmor() == this){
+        equipment->setArmor(nullptr);
     }else{
-        human->setArmor(this);
+        equipment->setArmor(this);
     }
 }

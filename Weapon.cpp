@@ -9,9 +9,10 @@ Weapon::Weapon(std::string name, std::string description, Stats stats, SpriteAtl
 
 void Weapon::onUse(Entity* entity){
     Human* human = (Human*)entity;
-    if(human->getWeapon() == this){
-        human->setWeapon(nullptr);
+    Equipment* equipment = human->getEquipment();
+    if(equipment->getWeapon() == this){
+        equipment->setWeapon(nullptr);
     }else{
-        human->setWeapon(this);
+        equipment->setWeapon(this);
     }
 }

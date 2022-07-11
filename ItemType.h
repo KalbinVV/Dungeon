@@ -4,7 +4,8 @@
 enum class ItemType{
     Undefined,
     Weapon,
-    Armor
+    Armor,
+    Accessory
 };
 
 #endif // ITEMTYPE_H_INCLUDED
