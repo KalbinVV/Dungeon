@@ -24,6 +24,9 @@ void MeleeEnemy::onTurn(){
             enemyCoords.y--;
         }
         Game::init()->getTileAt(enemyCoords.y, enemyCoords.x)->onMove(this, enemyCoords);
+    }else{
+        onAttack(Game::init()->getPlayer());
+        Game::init()->getLogger()->info("Player attacked!");
     }
 }
 

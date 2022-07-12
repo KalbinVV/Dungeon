@@ -157,21 +157,25 @@ void MainState::drawPlayer(){
 }
 
 void MainState::drawStats(){
-    Stats stats = game->getPlayer()->getStats();
+    Player* player = game->getPlayer();
+    Stats stats = player->getStats();
     Renderer* renderer = game->getRenderer();
-    Stats bonusStats = game->getPlayer()->getBonusStats();
-    Text text("Сила: " + std::to_string(stats.strength)
-        + " +" + std::to_string(bonusStats.strength), game->getFont(), TextRenderType::Quality);
+    Stats bonusStats = player->getBonusStats();
+    Text text("Здоровье: " + std::to_string(player->getCurrentHp()), game->getFont(), TextRenderType::Quality);
     text.setCharacterSize(12);
     SDL_Rect backgroundDstRect{
         x: 0,
-        y: game->getWindow()->getHeight() - 90,
+        y: game->getWindow()->getHeight() - 110,
         w: game->getWindow()->getWidth() / 4,
-        h: 90
+        h: 110
     };
     SDL_SetRenderDrawColor(renderer->getSdlRenderer(), 0, 0, 0, 100);
     SDL_RenderFillRect(renderer->getSdlRenderer(), &backgroundDstRect);
-    text.setPosition(Vec2i(0, game->getWindow()->getHeight() - 80));
+    text.setPosition(Vec2i(0, game->getWindow()->getHeight() - 100));
+    text.draw(renderer);
+    text.setPosition(text.getPosition().addY(20));
+    text.setString("Сила: " + std::to_string(stats.strength)
+        + " +" + std::to_string(bonusStats.strength));
     text.draw(renderer);
     text.setString("Ловкость: " + std::to_string(stats.dexterity)
         + " +" + std::to_string(bonusStats.dexterity));

@@ -14,7 +14,7 @@ Entity* EntitiesBuilder::genEntity(SpriteAtlas* spriteAtlas, std::string entityI
     Entity* entity = nullptr;
     switch(entitiesIDs[entityID]){
         case 0:{
-            entity = new MeleeEnemy("Тестовый враг", "1", spriteAtlas, 0, 1, 40, 5, 15);
+            entity = new MeleeEnemy("Тестовый враг", "1", spriteAtlas, 1, 0, 40, 5, 15);
             break;
         }
         default:
