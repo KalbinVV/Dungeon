@@ -27,25 +27,53 @@ void MainState::handleEvents(){
             switch(event.key.keysym.scancode){
                 case SDL_SCANCODE_RIGHT:
                 case SDL_SCANCODE_D:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(1));
+                    Player* player = game->getPlayer();
+                    Vec2i newCoords = player->getCoords().addX(1);
+                    Entity* entity = game->getWorldMap()->getEntityByCoords(newCoords);
+                    if(entity == nullptr){
+                        player->move(newCoords);
+                    }else{
+                        entity->onDefence(10);
+                    }
                     updateScreen();
                     break;
                 }
                 case SDL_SCANCODE_LEFT:
                 case SDL_SCANCODE_A:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addX(-1));
+                    Player* player = game->getPlayer();
+                    Vec2i newCoords = player->getCoords().addX(-1);
+                    Entity* entity = game->getWorldMap()->getEntityByCoords(newCoords);
+                    if(entity == nullptr){
+                        player->move(newCoords);
+                    }else{
+                        entity->onDefence(10);
+                    }
                     updateScreen();
                     break;
                 }
                 case SDL_SCANCODE_DOWN:
                 case SDL_SCANCODE_S:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(1));
+                    Player* player = game->getPlayer();
+                    Vec2i newCoords = player->getCoords().addY(1);
+                    Entity* entity = game->getWorldMap()->getEntityByCoords(newCoords);
+                    if(entity == nullptr){
+                        player->move(newCoords);
+                    }else{
+                        entity->onDefence(10);
+                    }
                     updateScreen();
                     break;
                 }
                 case SDL_SCANCODE_UP:
                 case SDL_SCANCODE_W:{
-                    game->getPlayer()->move(game->getPlayer()->getCoords().addY(-1));
+                    Player* player = game->getPlayer();
+                    Vec2i newCoords = player->getCoords().addY(-1);
+                    Entity* entity = game->getWorldMap()->getEntityByCoords(newCoords);
+                    if(entity == nullptr){
+                        player->move(newCoords);
+                    }else{
+                        entity->onDefence(10);
+                    }
                     updateScreen();
                     break;
                 }
@@ -92,10 +120,10 @@ void MainState::drawMap(){
         g: 18,
         b: 8
     });
-    int worldWidth = game->getWorldWidth();
-    int worldHeight = game->getWorldHeight();
-    int spriteWidth = game->getWindow()->getWidth() / viewRange;
-    int spriteHeight = game->getWindow()->getHeight() / viewRange;
+    const int worldWidth = game->getWorldMap()->getWidth();
+    const int worldHeight = game->getWorldMap()->getHeight();
+    const int spriteWidth = game->getWindow()->getWidth() / viewRange;
+    const int spriteHeight = game->getWindow()->getHeight() / viewRange;
     for(int i = coords.y - viewRange / 2; i <= coords.y + viewRange / 2; i++){
         for(int j = coords.x - viewRange / 2; j <= coords.x + viewRange / 2; j++){
             if(i < 0 || j < 0 || i >= worldHeight || j >= worldWidth) continue;
@@ -192,7 +220,7 @@ void MainState::drawStats(){
 }
 
 void MainState::updateEnvironment(){
-    const std::list<Entity*> entities = game->getEntities();
+    const std::list<Entity*> entities = game->getWorldMap()->getEntities();
     const int viewRange = game->getViewRange();
     const int spriteWidth = game->getWindow()->getWidth() / viewRange;
     const int spriteHeight = game->getWindow()->getHeight() / viewRange;
@@ -211,6 +239,11 @@ void MainState::updateEnvironment(){
                 h: spriteHeight
             };
             entity->draw(game->getRenderer(), &dstRect);
+            Text enemyCurrentHp(std::to_string(entity->getCurrentHp()), game->getFont(), TextRenderType::Quality);
+            enemyCurrentHp.setPosition(Vec2i((entityCoords.x - playerCoords.x + (viewRange / 2) ) * spriteWidth,
+                (entityCoords.y - playerCoords.y + (viewRange / 2) ) * spriteHeight));
+            enemyCurrentHp.setCharacterSize(14);
+            enemyCurrentHp.draw(game->getRenderer());
         }
     }
 }

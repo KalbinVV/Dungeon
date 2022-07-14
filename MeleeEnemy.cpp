@@ -32,5 +32,14 @@ void MeleeEnemy::onTurn(){
 
 void MeleeEnemy::onAttack(Entity* entity){
     int damage = minDamage + (rand() % (maxDamage - minDamage + 1));
-    entity->setCurrentHp(entity->getCurrentHp() - damage);
+    entity->onDefence(damage);
+}
+
+void MeleeEnemy::onDefence(int damage){
+    int resultHp = getCurrentHp() - damage;
+    if(resultHp <= 0){
+        Game::init()->getWorldMap()->removeEntity(this);
+    }else{
+        setCurrentHp(resultHp);
+    }
 }

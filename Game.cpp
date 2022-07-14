@@ -137,16 +137,8 @@ Tile* Game::getTileAt(int y, int x){
     return worldMap->get(y,x);
 }
 
-int Game::getWorldWidth(){
-    return worldMap->getWidth();
-}
-
-int Game::getWorldHeight(){
-    return worldMap->getHeight();
-}
-
-const std::list<Entity*> Game::getEntities(){
-    return worldMap->getEntities();
+WorldMap* Game::getWorldMap(){
+    return worldMap.get();
 }
 
 void Game::run(){

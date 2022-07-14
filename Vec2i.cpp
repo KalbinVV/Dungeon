@@ -32,3 +32,7 @@ Vec2i Vec2i::addY(int value){
 int Vec2i::distance(Vec2i anotherVec){
     return std::sqrt(std::pow(anotherVec.x - x, 2) + std::pow(anotherVec.y - y, 2));
 }
+
+bool Vec2i::operator==(Vec2i anotherVec){
+    return x == anotherVec.x && y == anotherVec.y;
+}

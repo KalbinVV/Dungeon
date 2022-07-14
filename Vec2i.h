@@ -11,6 +11,7 @@ public:
     Vec2i addX(int value);
     Vec2i addY(int value);
     int distance(Vec2i anotherVec);
+    bool operator==(Vec2i anotherVec);
 };
 
 #endif // VEC2I_H_INCLUDED

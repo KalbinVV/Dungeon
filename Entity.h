@@ -27,6 +27,8 @@ public:
     void setCurrentHp(int currentHp);
     void setMaxHp(int maxHp);
     virtual void onTurn() {};
+    virtual void onDefence(int damage) {};
+    virtual ~Entity() {};
 };
 
 #endif // ENTITY_H_INCLUDED

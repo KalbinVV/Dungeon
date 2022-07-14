@@ -13,6 +13,7 @@ public:
         int maxHp, int minDamage, int maxDamage);
     virtual void onTurn() override;
     virtual void onAttack(Entity* entity) override;
+    virtual void onDefence(int damage) override;
 };
 
 #endif // MELEEENEMY_H_INCLUDED

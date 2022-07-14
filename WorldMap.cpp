@@ -102,7 +102,18 @@ void WorldMap::spawnEntity(Entity* entity){
 }
 
 void WorldMap::removeEntity(Entity* entity){
+    delete entity;
     entities.remove(entity);
+}
+
+Entity* WorldMap::getEntityByCoords(Vec2i coords){
+    Entity* entity = nullptr;
+    for(Entity* e : entities){
+        if(e->getCoords() == coords){
+            entity = e;
+        }
+    }
+    return entity;
 }
 
 WorldMap::~WorldMap(){

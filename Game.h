@@ -60,9 +60,7 @@ public:
     void initPlayer(int spriteX, int spriteY);
     Player* getPlayer();
     Tile* getTileAt(int y, int x);
-    int getWorldWidth();
-    int getWorldHeight();
-    const std::list<Entity*> getEntities();
+    WorldMap* getWorldMap();
     void run();
 };
 

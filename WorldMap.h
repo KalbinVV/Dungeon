@@ -22,6 +22,7 @@ public:
     const std::list<Entity*>& getEntities();
     void spawnEntity(Entity* entity);
     void removeEntity(Entity* entity);
+    Entity* getEntityByCoords(Vec2i coords);
     ~WorldMap();
 };
 

@@ -17,9 +17,13 @@ Stats Player::getStats(){
 
 void Player::move(Vec2i coords){
     Game* game = Game::init();
-    int worldWidth = game->getWorldWidth();
-    int worldHeight = game->getWorldHeight();
+    const int worldWidth = game->getWorldMap()->getWidth();
+    const int worldHeight = game->getWorldMap()->getHeight();
     if(coords.x >= 0 && coords.x < worldWidth && coords.y >= 0 && coords.y < worldHeight){
         game->getTileAt(coords.y, coords.x)->onMove(this, coords);
     }
+}
+
+void Player::onDefence(int damage){
+    setCurrentHp(getCurrentHp() - damage);
 }

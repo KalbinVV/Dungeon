@@ -11,6 +11,7 @@ public:
     Player(SpriteAtlas* spriteAtlas, int spriteX, int spriteY);
     Stats getStats();
     void move(Vec2i coords);
+    void onDefence(int damage) override;
 };
 
 #endif // PLAYER_H_INCLUDED
